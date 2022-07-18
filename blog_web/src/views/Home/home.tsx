@@ -39,7 +39,22 @@ function Home() {
               </Carousel>
             </div>
             <div className="right">
-              <div className="title">Hello, 欢迎来到 世界是棵树</div>
+              <div className="title">Hello, 欢迎来到 <span>世界是棵树</span></div>
+              <Carousel autoplay effect="fade" autoplaySpeed={2000} dots={false}>
+                <div>
+                心之所向，身之所往，价值所在。
+                </div>
+                <div>
+                互联网时代，没有自己的网站意味着你在这个世界上不存在。
+                </div>
+              </Carousel>
+              <div className="socical">
+                <div className="socil_name">
+                社交媒体
+                </div>
+                <div className="app">222</div>
+              </div>
+              
             </div>
           </div>
         </div>
