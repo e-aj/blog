@@ -1,7 +1,7 @@
 <template>
 <div class="register">
   <div class="title">
-    管理系统登录
+    管理系统注册
   </div>
    <a-form
     :model="formState"
@@ -15,15 +15,17 @@
     >
       <a-input v-model:value="formState.username"  placeholder="用户名"/>
     </a-form-item>
+    
+
     <a-form-item
       name="password"
       :rules="[{ required: true, message: '请输入你的密码!' }]"
     >
       <a-input-password v-model:value="formState.password" placeholder="密码"/>
     </a-form-item>
-      <span class="toRegister" @click="toRegister"> 没有账号，去注册</span>
+      <span class="toLogin" @click="toLogin"> 去登录</span>
     <a-form-item>
-      <a-button type="primary" html-type="submit">登录</a-button>
+      <a-button type="primary" html-type="submit">注册</a-button>
     </a-form-item>
   </a-form>
 </div>
@@ -31,7 +33,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { login } from "../../api/login";
+import { register } from "../../api/login";
 import { message } from "ant-design-vue";
 import {useRouter} from 'vue-router'
 
@@ -50,11 +52,11 @@ export default defineComponent({
     const router = useRouter()
 
     const onFinish = (values: any) => {
-      login(formState).then((res) => {
+      register(formState).then((res) => {
         if (res.status === 0) {
-          message.info("登录成功");
+          message.info("注册成功");
           setTimeout(()=>{
-            router.push('/')
+            router.push('/login')
           },2000)
         } else {
           message.warning(res.message);
@@ -67,15 +69,15 @@ export default defineComponent({
     };
    
   //  去登录
-  const toRegister = ()=>{
-    router.push('/register')
+  const toLogin = ()=>{
+    router.push('/login')
   }
 
     return {
       formState,
       onFinish,
       onFinishFailed,
-      toRegister,
+      toLogin,
     };
   },
 });
@@ -94,7 +96,7 @@ export default defineComponent({
     font-weight: bold;
     color: #666666;
   }
-  .toRegister{
+  .toLogin{
     display: inherit;
     color: #1890FF;
     text-align: right;
