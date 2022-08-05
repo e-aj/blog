@@ -32,6 +32,8 @@ instance.interceptors.response.use(
     },
     (error) => {
         // 对响应错误做什么
+        console.log(error)
+        message.error('服务器错误！请联系管理员！')
         return Promise.reject(error)
     }
 )
