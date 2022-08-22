@@ -6,16 +6,16 @@
         v-model:openKeys="openKeys"
         v-model:selectedKeys="selectedKeys"
         mode="inline"
-        theme="dark"
-        :inline-collapsed="collapsed"
+        theme="llight"
+        @select="menuSelect"
       >
         <a-sub-menu key="sub1">
           <template #icon>
             <MailOutlined />
           </template>
-          <template #title> 个人信息</template>
-          <a-menu-item key="1">Option 5</a-menu-item>
-          <a-menu-item key="2">Option 6</a-menu-item>
+          <template #title>个人信息</template>
+          <a-menu-item key="userList">用户列表</a-menu-item>
+          <a-menu-item key="2">权限管理</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>
@@ -28,7 +28,9 @@
           </div>
         </div>
       </a-layout-header>
-      <a-layout-content>Content</a-layout-content>
+      <a-layout-content>
+        <router-view />
+      </a-layout-content>
       <a-layout-footer>Footer</a-layout-footer>
     </a-layout>
     <div
@@ -71,6 +73,9 @@ export default defineComponent({
     // 定义userinfo显示
     const showUserinfo = ref<boolean>(false);
 
+    const selectedKeys = ref<string[]>(["1"]);
+    const openKeys = ref<string[]>(["sub1"]);
+
     // 退出弹框
     const visibleLogout = ref<boolean>(false);
 
@@ -103,15 +108,24 @@ export default defineComponent({
       console.log("changePassword");
     };
 
+    //
+    const menuSelect = (item: any, key: any, selectedKeys: any) => {
+      console.log(item, key, selectedKeys);
+      router.push(item.key);
+    };
+
     return {
       userInfo,
       showUserinfo,
       visibleLogout,
+      selectedKeys,
+      openKeys,
       openUserInfo,
       closeUserinfo,
       logout,
       changePassword,
       logoutHandleOk,
+      menuSelect,
     };
   },
 });
@@ -126,11 +140,15 @@ export default defineComponent({
       text-align: center;
       font-size: 30px;
     }
+    .ant-layout-sider-children {
+      background-image: url("../../assets/sider_bg.jpg");
+    }
   }
   .ant-layout-header {
     background: #f0f2f5;
     display: flex;
     justify-content: flex-end;
+    border-bottom: 1px solid #ccc;
     .info {
       display: flex;
       align-items: center;
