@@ -1,8 +1,8 @@
-import instence from './http'
+import instance from './http'
 
 // 注册
 export function register(data: any) {
-  return instence({
+  return instance({
     url: "api/register",
     method: 'post',
     data,
@@ -11,7 +11,7 @@ export function register(data: any) {
 
 // 登录
 export function login(data: any) {
-  return instence({
+  return instance({
     url: "api/login",
     method: 'post',
     data,

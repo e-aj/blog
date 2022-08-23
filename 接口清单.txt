@@ -1,19 +1,35 @@
 blog_background
 	个人信息
-		1.登录
-		2.注册
-		3.修改密码
-		4.修改头像/资料
+		1.登录	login
+		2.注册	register
+		3.修改密码	change_password
+		4.修改头像/资料	change_avatar
 	内容
-		5.发布文章
-		6.文章列表
-		7.查看文章
-		8.修改文章
-		9.删除文章
+		5.发布文章	publish_article
+		6.文章列表	articleList
+		7.查看文章	get_article
+		8.修改文章	change_article
+		9.删除文章	delete_article
 
 blog_web
 	1.查看文章
 
 
 
+数据库
+	blog_user
+		id
+		username
+		password
+		is_delete（0为未删除，1为删除）
+		avatar
+	blog_article
+		id
+		title
+		tetails
+		is_delete(0为未删除，1为删除）
+		hits
+		
+
+		
 	
