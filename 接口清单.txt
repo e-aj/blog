@@ -16,7 +16,7 @@ blog_web
 
 
 
-数据库
+数据库(http://www.escook.cn:8088/#/mds/2.login_reg)
 	blog_user
 		id
 		username
