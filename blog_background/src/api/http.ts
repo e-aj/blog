@@ -6,17 +6,17 @@ import { message } from "ant-design-vue";
 const instance = axios.create({
     baseURL: "http://192.168.12.62:3333/",
     timeout: 3000,
-    // headers:{
-    //     // "Content-Type":"application/json",
-    //     // Authorization:String(localStorage.getItem('token'))
-    // }
+    headers:{
+        "Content-Type":"application/json",
+        Authorization:String(localStorage.getItem('token'))
+    }
 
 })
 
 // 添加拦截器
 instance.interceptors.request.use(
     (config) => {
-        config.data = qs.stringify(config.data)
+        // config.data = qs.stringify(config.data)
         return config
     },
     (error) => {

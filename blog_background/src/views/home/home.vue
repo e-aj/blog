@@ -98,6 +98,7 @@ export default defineComponent({
     const logoutHandleOk = () => {
       visibleLogout.value = false;
       message.info("退出成功");
+      localStorage.clear();
       setTimeout(() => {
         router.push("/login");
       }, 1500);
