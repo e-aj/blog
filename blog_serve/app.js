@@ -24,9 +24,16 @@ app.use((err,req,res,next)=>{
     if(err.name === 'UnauthorizedError') return res.send({status:1,message:'身份认证失败！'})
 })
 
+
+//路由 
 // 导入并注册用户路由模块
 const userRouter = require('./router/user')
 app.use('/api',userRouter)
+
+// 信息模块
+const userinfoRouter = require('./router/userinfo')
+app.use('/my',userinfoRouter)
+
 
 
 // 启动web服务器
