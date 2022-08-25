@@ -11,7 +11,18 @@ app.use(cors())
 // 设置后可以用 req.body 获取 POST 传入 data
 app.use(express.json())
 
-app.use(express.urlencoded({ extended: false }))
+// 导入配置文件
+const config = require('./config')
+
+// 解析token中间件
+const expressJWT = require('express-jwt')
+// 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
+app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api\//]}))
+
+// 错误中间件
+app.use((err,req,res,next)=>{
+    if(err.name === 'UnauthorizedError') return res.send({status:1,message:'身份认证失败！'})
+})
 
 // 导入并注册用户路由模块
 const userRouter = require('./router/user')
