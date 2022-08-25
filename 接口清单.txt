@@ -4,6 +4,7 @@ blog_background
 		2.注册	register
 		3.修改密码	change_password
 		4.修改头像/资料	change_avatar
+		5.获取信息	userinfo
 	内容
 		5.发布文章	publish_article
 		6.文章列表	articleList
