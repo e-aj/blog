@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 
 // 获取信息
 exports.getUserinfo = (req, res) => {
-  const sql = `select id,username from blog_user where id=?`;
+  const sql = `select id,username,avatar from blog_user where id=?`;
   db.query(sql, req.user.id, (err, result) => {
     if (err) return res.send({ status: 1, message: err.message });
 
@@ -70,3 +70,33 @@ exports.updatePassword = (req, res) => {
   });
 };
 
+// 更换用户头像
+exports.updateAvatar = (req,res)=>{
+  const sql = `update blog_user set avatar=? where id=?`
+
+  db.query(sql,[req.body.avatar,req.user.id],(err,result) =>{
+
+    if(err) return res.send({status:1,message:err.message})
+
+    if(result.affectedRows !==1) return res.send({status:1,message:'更新头像失败'})
+
+    res.send({
+      status:0,
+      message:'更新成功！',
+    })
+  })
+
+}
+
+// 获取用户列表
+exports.getUserList = (req,res)=>{
+  const sql = `select id,username,avatar from blog_user`
+  db.query(sql,(err,result)=>{
+    if(err) return res.send({status:1,message:err.message})
+    res.send({
+      status:0,
+      message:'获取用户列表成功！',
+      result
+    })
+  })
+}

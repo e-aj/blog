@@ -18,6 +18,11 @@ router.post('/userindo',userinfo_handler.postUserinfo)
 // 重置密码
 router.post('/updatepwd',expressJoi(update_password_schema),userinfo_handler.updatePassword)
 
+// 更换用户头像
+router.post('/update/avatar',userinfo_handler.updateAvatar)
+
+// 获取用户列表
+router.post('/userList',userinfo_handler.getUserList)
 
 // 向外共享路由
 module.exports = router
