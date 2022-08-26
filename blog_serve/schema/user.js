@@ -25,3 +25,11 @@ exports.reg_login_schema = {
     password,
   },
 }
+
+// 验证密码
+exports.update_password_schema = {
+  body:{
+    oldPwd:password,
+    newPwd: password,
+  }
+}
