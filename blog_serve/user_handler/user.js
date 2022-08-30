@@ -80,7 +80,7 @@ exports.login = (req,res)=>{
             return res.send({status:1,message:'密码错误！'})
         }
 
-        const user = {...result[0],password:''}
+        const user = {...result[0],password:'',avatar:''}
 
         // 生成token
         const tokenStr = jwt.sign(user,config.jwtSecretKey,{

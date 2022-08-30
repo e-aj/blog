@@ -4,7 +4,7 @@
       <a-breadcrumb-item>首页</a-breadcrumb-item>
       <a-breadcrumb-item>用户列表</a-breadcrumb-item>
     </a-breadcrumb>
-    <a-table :columns="columns" :data-source="data" />
+    <!-- <a-table :columns="columns" :data-source="data" /> -->
   </div>
 </template>
 <script lang="ts">
@@ -35,7 +35,6 @@ export default defineComponent({
 
     return {
       columns,
-      data,
     };
   },
 });

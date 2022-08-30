@@ -22,7 +22,7 @@
     <a-layout>
       <a-layout-header class="header">
         <div class="info">
-          <img :src="userInfo.avatar" alt="" />
+          <img :src="userInfo.avatar" alt="头像" @click="changeAvatar" />
           <div class="username" @mousemove="openUserInfo" @mouseleave="closeUserinfo">
             {{ userInfo.username }}
           </div>
@@ -42,6 +42,7 @@
       <div class="changePassword" @click="changePassword">修改密码</div>
       <div class="logout" @click="logout">退出登录</div>
     </div>
+
     <!-- 退出弹框 -->
     <a-modal
       v-model:visible="visibleLogout"
@@ -52,32 +53,72 @@
     >
       <p>是否退出系统</p>
     </a-modal>
+    <!-- 更换头像 -->
+    <a-modal
+      v-model:visible="changeAvatarVisible"
+      title="更换头像"
+      @ok="changeAvatarHandleOk"
+      class="changeAvatar"
+    >
+      <div class="now">
+        <span>当前头像</span>
+        <img :src="userInfo.avatar" alt="" />
+      </div>
+      <div class="change">
+        <span>上传图片</span>
+        <div class="upload">
+          <div v-if="isUpload" class="img">
+            <img src="" alt="" />
+          </div>
+          <div v-else class="add" @click="addAvatar">
+            +
+            <input type="file" />
+          </div>
+          <!-- <uploadAvatar></uploadAvatar> -->
+        </div>
+      </div>
+    </a-modal>
   </a-layout>
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import img from "../../assets/1.jpg";
-import { message } from "ant-design-vue";
+import { message, Upload } from "ant-design-vue";
+import { getUserinfo, updateAvatar } from "../../api/user";
+import type { UploadChangeParam } from "ant-design-vue";
+import uploadAvatar from "../../components/uploadAvatar.vue";
 export default defineComponent({
+  components: {
+    uploadAvatar,
+  },
   setup() {
     // 定义router
     const router = useRouter();
 
     // 定义用户信息
     const userInfo = reactive({
-      username: "admin",
-      avatar: img,
+      id: "",
+      username: "",
+      avatar: "",
     });
 
     // 定义userinfo显示
     const showUserinfo = ref<boolean>(false);
-
     const selectedKeys = ref<string[]>(["1"]);
     const openKeys = ref<string[]>(["sub1"]);
 
     // 退出弹框
     const visibleLogout = ref<boolean>(false);
+
+    // 获取用户信息
+    const userinfo = () => {
+      getUserinfo().then((res) => {
+        userInfo.id = res.data.id;
+        userInfo.username = res.data.username;
+        userInfo.avatar = res.data.avatar;
+      });
+    };
+    userinfo();
 
     // 显示userinfo
     const openUserInfo = () => {
@@ -104,12 +145,33 @@ export default defineComponent({
       }, 1500);
     };
 
+    // 更换头像显示框
+    const changeAvatarVisible = ref<boolean>(false);
+
+    // 上传切换
+    const isUpload = ref<boolean>(false);
+
+    const fileList = ref([]);
+
+    // 更换头像
+    const changeAvatar = () => {
+      console.log("1111");
+      changeAvatarVisible.value = true;
+    };
+
+    // 更换头像确认
+    const changeAvatarHandleOk = () => {
+      console.log("111");
+    };
+
+    // 添加图片
+    const addAvatar = () => {};
     // 改变信息
     const changePassword = () => {
       console.log("changePassword");
     };
 
-    //
+    //切换路由
     const menuSelect = (item: any, key: any, selectedKeys: any) => {
       console.log(item, key, selectedKeys);
       router.push(item.key);
@@ -121,12 +183,21 @@ export default defineComponent({
       visibleLogout,
       selectedKeys,
       openKeys,
+      changeAvatarVisible,
+      isUpload,
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+      fileList,
       openUserInfo,
       closeUserinfo,
       logout,
       changePassword,
       logoutHandleOk,
       menuSelect,
+      changeAvatar,
+      changeAvatarHandleOk,
+      addAvatar,
     };
   },
 });
@@ -158,6 +229,7 @@ export default defineComponent({
         height: 30px;
         margin: 0 10px;
         border-radius: 50%;
+        cursor: pointer;
       }
       .username {
         font-size: 20px;
@@ -188,5 +260,35 @@ export default defineComponent({
 .ant-row-rtl #components-layout-demo-top-side-2 .logo {
   float: right;
   margin: 16px 0 16px 24px;
+}
+.changeAvatar {
+  .now {
+    margin: 5px 5px 20px;
+    img {
+      width: 100px;
+      height: 100px;
+      margin: 0 10px;
+      border-radius: 50%;
+    }
+  }
+  .change {
+    margin: 50px 5px 20px;
+    .upload {
+      margin: 0 10px;
+      display: inline-block;
+      border: 1px solid #ccc;
+      width: 100px;
+      height: 100px;
+      .add {
+        line-height: 100px;
+        text-align: center;
+        font-size: 40px;
+        color: #ccc;
+        input {
+          display: none;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -28,8 +28,10 @@ declare module '@vue/runtime-core' {
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     ATable: typeof import('ant-design-vue/es')['Table']
     ATag: typeof import('ant-design-vue/es')['Tag']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
     Home: typeof import('./src/components/home.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UploadAvatar: typeof import('./src/components/uploadAvatar.vue')['default']
   }
 }
