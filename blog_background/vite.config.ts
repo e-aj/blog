@@ -6,7 +6,7 @@ import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: "192.168.12.62",
+    host: "192.168.191.27",
     port: 9999,
   },
   plugins: [

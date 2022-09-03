@@ -4,7 +4,8 @@ import qs from 'qs'
 import { message } from "ant-design-vue";
 
 const instance = axios.create({
-    baseURL: "http://192.168.12.62:3333/",
+    // baseURL: "http://192.168.12.62:3333/",192.168.191.27
+    baseURL: "http://192.168.191.27:3333/",
     timeout: 3000,
     headers:{
         "Content-Type":"application/json",

@@ -7,12 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
-    ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
     AButton: typeof import('ant-design-vue/es')['Button']
-    ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
-    AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
-    ADivider: typeof import('ant-design-vue/es')['Divider']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
@@ -26,10 +21,7 @@ declare module '@vue/runtime-core' {
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
-    ATable: typeof import('ant-design-vue/es')['Table']
-    ATag: typeof import('ant-design-vue/es')['Tag']
     AUpload: typeof import('ant-design-vue/es')['Upload']
-    Home: typeof import('./src/components/home.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UploadAvatar: typeof import('./src/components/uploadAvatar.vue')['default']
