@@ -19,10 +19,9 @@ export function updateAvatar(data:any){
 }
 
 // 用户列表
-export function userList(data: any) {
+export function getUserList() {
     return instance({
-      url: "api/register",
+      url: "my/userList",
       method: 'post',
-      data,
     })
   }

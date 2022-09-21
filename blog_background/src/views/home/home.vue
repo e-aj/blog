@@ -23,11 +23,7 @@
       <a-layout-header class="header">
         <div class="info">
           <img :src="userInfo.avatar" @click="changeAvatar" />
-          <div
-            class="username"
-            @mousemove="openUserInfo"
-            @mouseleave="closeUserinfo"
-          >
+          <div class="username" @mousemove="openUserInfo" @mouseleave="closeUserinfo">
             {{ userInfo.username }}
           </div>
         </div>
@@ -63,7 +59,7 @@
       title="更换头像"
       @ok="changeAvatarHandleOk"
       class="changeAvatar"
-       cancelText="取消"
+      cancelText="取消"
       okText="确定更改"
     >
       <div class="now">
@@ -78,7 +74,7 @@
           </div>
           <div v-else class="add" @click="addAvatar">
             +
-            <img :src="addImg" alt="" v-show="addImg">
+            <img :src="addImg" alt="" v-show="addImg" />
             <input type="file" ref="file" @change="addChange" />
           </div>
         </div>
@@ -165,7 +161,7 @@ export default defineComponent({
     };
 
     // 更新的图片
-    const addImg = ref('')
+    const addImg = ref("");
 
     //input file dom
     const file = ref(null);
@@ -178,34 +174,69 @@ export default defineComponent({
     // input change 事件
     const addChange = (e) => {
       // getBase64(e.target.files[0]);
-      let img = e.target.files[0]; //获取到上传文件的对象
+      console.log(e);
+      // let img = e.target.files[0]; //获取到上传文件的对象
+
+      const img = compressImg(e.target.files[0], e.target.files[0].type, 1000, 1000);
+      console.log(img);
       var reader = new FileReader();
       reader.readAsDataURL(img); //参数为上传的文件对象 传值进去就会触发以下onload方法
-      reader.onload =  (i) =>{
+      reader.onload = (i) => {
         // e.target.result为转换成的base64编码
         // console.log(i.target.result)
-        addImg.value = i.target.result
+        addImg.value = i.target.result;
       };
     };
 
-      // 更换头像确认
+    // 更换头像确认
     const changeAvatarHandleOk = () => {
-      console.log("111");
       let data = {
-        avatar:addImg.value,
-        id:userInfo.id
-      }
-      console.log(data)
-      updateAvatar(data).then(res=>{
-        if(res.status == 0){
-          message.info('更新成功！')
-          setTimeout(()=>{changeAvatarVisible.value = false},500)
+        avatar: addImg.value,
+        id: userInfo.id,
+      };
+      updateAvatar(data).then((res) => {
+        if (res.status == 0) {
+          message.info("更新成功！");
+          setTimeout(() => {
+            changeAvatarVisible.value = false;
+          }, 500);
           userinfo();
-          addImg.value = ''
+          addImg.value = "";
         }
-      })
+      });
     };
 
+    // 图片压缩函数
+    const compressImg = (img, type, mx, mh): any => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      const { width: originWidth, height: originHeight } = img;
+      // 最大尺寸限制
+      const maxWidth = mx;
+      const maxHeight = mh;
+      // 目标尺寸
+      let targetWidth = originWidth;
+      let targetHeight = originHeight;
+      if (originWidth > maxWidth || originHeight > maxHeight) {
+        if (originWidth / originHeight > 1) {
+          // 宽图片
+          targetWidth = maxWidth;
+          targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+        } else {
+          // 高图片
+          targetHeight = maxHeight;
+          targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+        }
+      }
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      if (context) {
+        context.clearRect(0, 0, targetWidth, targetHeight);
+        // 图片绘制
+        context.drawImage(img, 0, 0, targetWidth, targetHeight);
+      }
+      return canvas.toDataURL(type || "image/jpeg", 0.5);
+    };
 
     // 改变信息
     const changePassword = () => {
@@ -334,7 +365,7 @@ export default defineComponent({
         color: #ccc;
         cursor: pointer;
         position: relative;
-        img{
+        img {
           position: absolute;
           left: 0;
         }
