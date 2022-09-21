@@ -1,7 +1,7 @@
 <template>
   <a-layout>
     <a-layout-sider>
-      <div class="title">管理系统</div>
+      <div class="title" @click="toIndex">管理系统</div>
       <a-menu
         v-model:openKeys="openKeys"
         v-model:selectedKeys="selectedKeys"
@@ -96,6 +96,11 @@ export default defineComponent({
   setup() {
     // 定义router
     const router = useRouter();
+
+    // 跳转首页
+    const toIndex = () => {
+      router.push("/");
+    };
 
     // 定义用户信息
     const userInfo = reactive({
@@ -267,6 +272,7 @@ export default defineComponent({
       addImg,
       fileList,
       file,
+      toIndex,
       openUserInfo,
       closeUserinfo,
       logout,
@@ -290,6 +296,7 @@ export default defineComponent({
       color: #fff;
       text-align: center;
       font-size: 30px;
+      cursor: pointer;
     }
     .ant-layout-sider-children {
       background-image: url("../../assets/sider_bg.jpg");
