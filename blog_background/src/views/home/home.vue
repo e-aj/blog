@@ -89,6 +89,8 @@ import { message, Upload } from "ant-design-vue";
 import { getUserinfo, updateAvatar } from "../../api/user";
 import type { UploadChangeParam } from "ant-design-vue";
 import uploadAvatar from "../../components/uploadAvatar.vue";
+import { storeToRefs } from "pinia";
+import { useStore } from "../../stores/user";
 export default defineComponent({
   components: {
     uploadAvatar,
@@ -96,6 +98,11 @@ export default defineComponent({
   setup() {
     // 定义router
     const router = useRouter();
+
+    // 定义状态管理器
+    const store = useStore();
+    const storeData = storeToRefs(store);
+    console.log(storeData);
 
     // 跳转首页
     const toIndex = () => {
@@ -118,16 +125,6 @@ export default defineComponent({
     // 退出弹框
     const visibleLogout = ref<boolean>(false);
 
-    // 获取用户信息
-    const userinfo = () => {
-      getUserinfo().then((res) => {
-        userInfo.id = res.data.id;
-        userInfo.username = res.data.username;
-        userInfo.avatar = res.data.avatar;
-      });
-    };
-    userinfo();
-
     // 显示userinfo
     const openUserInfo = () => {
       showUserinfo.value = true;
@@ -147,7 +144,7 @@ export default defineComponent({
     const logoutHandleOk = () => {
       visibleLogout.value = false;
       message.info("退出成功");
-      localStorage.clear();
+      localStorage.clear("token");
       setTimeout(() => {
         router.push("/login");
       }, 1500);
@@ -254,6 +251,18 @@ export default defineComponent({
       console.log(item, key, selectedKeys);
       router.push(item.key);
     };
+
+    onMounted(() => {
+      // 获取用户信息
+      const userinfo = () => {
+        getUserinfo().then((res) => {
+          userInfo.id = res.data.id;
+          userInfo.username = res.data.username;
+          userInfo.avatar = res.data.avatar;
+        });
+      };
+      userinfo();
+    });
 
     return {
       userInfo,

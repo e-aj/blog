@@ -31,6 +31,8 @@ import { defineComponent, reactive } from "vue";
 import { login } from "../../api/login";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useStore } from "../../stores/user";
 
 interface FormState {
   username: string;
@@ -44,13 +46,21 @@ export default defineComponent({
       password: "",
     });
 
+    // 定义路由
     const router = useRouter();
+
+    // 定义状态管理器
+    const store = useStore();
+    const storeData = storeToRefs(store);
 
     const onFinish = (values: any) => {
       login(formState).then((res) => {
         if (res.status === 0) {
-          console.log(res);
           localStorage.setItem("token", res.token);
+          store.$patch((storeData) => {
+            storeData.token = res.token;
+          });
+          console.log(storeData.token);
           message.info("登录成功");
           setTimeout(() => {
             router.push("/");
