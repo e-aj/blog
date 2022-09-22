@@ -29,7 +29,14 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     (res) => {
         // 对响应数据做什么
-        return Promise.resolve(res.data)
+        console.log(res)
+        if(res.data.status !== 5){
+            return Promise.resolve(res.data)
+        }else{
+            // localStorage.clear('token')
+            console.log(res.data.status)
+        }
+        
     },
     (error) => {
         // 对响应错误做什么

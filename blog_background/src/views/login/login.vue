@@ -49,8 +49,9 @@ export default defineComponent({
     const onFinish = (values: any) => {
       login(formState).then((res) => {
         if (res.status === 0) {
-          message.info("登录成功");
+          console.log(res);
           localStorage.setItem("token", res.token);
+          message.info("登录成功");
           setTimeout(() => {
             router.push("/");
           }, 2000);

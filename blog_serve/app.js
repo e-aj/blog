@@ -21,7 +21,7 @@ app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] 
 
 // 错误中间件
 app.use((err,req,res,next)=>{
-    if(err.name === 'UnauthorizedError') return res.send({status:1,message:'身份认证失败！'})
+    if(err.name === 'UnauthorizedError') return res.send({status:5,message:'身份认证失败！'})
 })
 
 

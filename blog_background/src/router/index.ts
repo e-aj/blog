@@ -37,14 +37,14 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach(async (to, from, next) => {
-//   const token = localStorage.getItem("token");
-//   if (!token && to.name !== "login" && to.name !== "register") {
-//     message.warning("请登录账号");
-//     next("/login");
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem("token");
+  if (!token && to.name !== "login" && to.name !== "register") {
+    message.warning("请登录账号");
+    next("/login");
+  } else {
+    next();
+  }
+});
 
 export default router;

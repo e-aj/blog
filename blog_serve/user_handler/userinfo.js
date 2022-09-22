@@ -5,8 +5,9 @@ const bcrypt = require('bcryptjs')
 
 // 获取信息
 exports.getUserinfo = (req, res) => {
-  const sql = `select id,username,avatar from blog_user where id=?`;
-  db.query(sql, req.user.id, (err, result) => {
+  const sql = `select id,username,avatar from blog_user where username=?`;
+  console.log(req.user.username)
+  db.query(sql, req.user.username, (err, result) => {
     if (err) return res.send({ status: 1, message: err.message });
 
     if (result.length !== 1)

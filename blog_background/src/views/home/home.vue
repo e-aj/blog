@@ -126,6 +126,7 @@ export default defineComponent({
         userInfo.avatar = res.data.avatar;
       });
     };
+    userinfo();
 
     // 显示userinfo
     const openUserInfo = () => {
@@ -253,10 +254,6 @@ export default defineComponent({
       console.log(item, key, selectedKeys);
       router.push(item.key);
     };
-
-    onMounted(() => {
-      userinfo();
-    });
 
     return {
       userInfo,
