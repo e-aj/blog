@@ -25,3 +25,11 @@ export function getUserList() {
       method: 'post',
     })
   }
+
+  // 修改密码
+  export function updatepwd(){
+    return instance({
+      url:"my/updatepwd",
+      method:'post'
+    })
+  }
