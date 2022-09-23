@@ -3,6 +3,10 @@ const express = require('express')
 // 创建express的服务器实例
 const app = express()
 
+const bodyParser = require('body-parser')
+app.use(bodyParser.json({limit:'600mb'})); //解决请求体过大传不过来的问题
+app.use(bodyParser.urlencoded({ limit:'600mb',extended:true}))
+
 // 导入cors中间件
 const cors = require('cors')
 // 将cors注册为全局中间件

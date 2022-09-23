@@ -76,6 +76,7 @@ exports.updateAvatar = (req,res)=>{
   const sql = `update blog_user set avatar=? where id=?`
 
   db.query(sql,[req.body.avatar,req.user.id],(err,result) =>{
+    console.log(result)
 
     if(err) return res.send({status:1,message:err.message})
 

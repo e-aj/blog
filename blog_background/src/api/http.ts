@@ -11,7 +11,7 @@ console.log(data.token.value);
 const instance = axios.create({
   baseURL: "http://192.168.12.62:3333/",
   // baseURL: "http://192.168.191.27:3333/",
-  // timeout: 5000,
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
     Authorization: String(localStorage.getItem("token")),
@@ -38,7 +38,7 @@ instance.interceptors.response.use(
     if (res.data.status !== 5) {
       return Promise.resolve(res.data);
     } else {
-      // localStorage.clear('token')
+      localStorage.clear('token')
       console.log(res.data.status);
     }
   },
