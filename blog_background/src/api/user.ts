@@ -27,9 +27,10 @@ export function getUserList() {
   }
 
   // 修改密码
-  export function updatepwd(){
+  export function updatepwd(data){
     return instance({
       url:"my/updatepwd",
-      method:'post'
+      method:'post',
+      data
     })
   }

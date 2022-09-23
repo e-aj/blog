@@ -35,15 +35,6 @@
       </a-layout-content>
       <a-layout-footer>Footer</a-layout-footer>
     </a-layout>
-    <div
-      class="usernameInfo"
-      v-show="showUserinfo"
-      @mousemove="openUserInfo"
-      @mouseleave="closeUserinfo"
-    >
-      <div class="changePassword" @click="changePassword">修改密码</div>
-      <div class="logout" @click="logout">退出登录</div>
-    </div>
   </a-layout>
 </template>
 <script lang="ts">

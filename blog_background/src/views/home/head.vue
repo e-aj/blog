@@ -26,6 +26,7 @@
     >
       <p>是否退出系统</p>
     </a-modal>
+
     <!-- 更换头像 -->
     <a-modal
       v-model:visible="changeAvatarVisible"
@@ -53,6 +54,30 @@
         </div>
       </div>
     </a-modal>
+
+    <!-- 修改密码 -->
+    <a-modal
+      v-model:visible="updatepwdVisible"
+      title="修改密码"
+      @ok="updatepwdHandleOk"
+      cancelText="取消"
+      okText="确定修改"
+    >
+      <a-form
+        :model="pwdData"
+        :label-col="{ span: 6 }"
+        :wrapper-col="{ span: 18 }"
+        autocomplete="off"
+      >
+        <a-form-item label="旧密码" name="username">
+          <a-input-password v-model:value="pwdData.oldPwd" />
+        </a-form-item>
+
+        <a-form-item label="新密码" name="password">
+          <a-input-password v-model:value="pwdData.newPwd" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -60,7 +85,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { message, Upload } from "ant-design-vue";
-import { getUserinfo, updateAvatar } from "../../api/user";
+import { getUserinfo, updateAvatar, updatepwd } from "../../api/user";
 export default {
   setup() {
     // 定义router
@@ -198,9 +223,32 @@ export default {
       };
     };
 
+    // 修改密码
+    // 定义密码框
+    const updatepwdVisible = ref<boolean>(false);
+
+    // 定义密码数据
+    const pwdData = reactive({
+      oldPwd: "",
+      newPwd: "",
+    });
+
     // 改变信息
     const changePassword = () => {
+      updatepwdVisible.value = true;
       console.log("changePassword");
+    };
+
+    const updatepwdHandleOk = () => {
+      updatepwd(pwdData).then((res) => {
+        if (res.status === 0) {
+          message.success("修改密码成功！请重新登录！");
+          updatepwdVisible.value = false;
+          router.push("/login");
+        } else {
+          message.warn(res.message);
+        }
+      });
     };
 
     onMounted(() => {
@@ -215,12 +263,11 @@ export default {
       openKeys,
       changeAvatarVisible,
       isUpload,
-      headers: {
-        authorization: localStorage.getItem("token"),
-      },
       addImg,
       fileList,
       file,
+      updatepwdVisible,
+      pwdData,
       openUserInfo,
       closeUserinfo,
       logout,
@@ -230,6 +277,7 @@ export default {
       changeAvatarHandleOk,
       addAvatar,
       addChange,
+      updatepwdHandleOk,
     };
   },
 };
