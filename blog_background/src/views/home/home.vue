@@ -97,16 +97,6 @@ export default defineComponent({
   .ant-layout-header {
     background: #f0f2f5;
   }
-  .usernameInfo {
-    position: absolute;
-    top: 65px;
-    right: 50px;
-    cursor: pointer;
-    padding: 10px 0 20px 20px;
-    .logout {
-      margin-top: 10px;
-    }
-  }
 }
 
 #components-layout-demo-top-side-2 .logo {

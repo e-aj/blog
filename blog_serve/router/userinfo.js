@@ -24,5 +24,6 @@ router.post('/update/avatar',userinfo_handler.updateAvatar)
 // 获取用户列表
 router.post('/userList',userinfo_handler.getUserList)
 
+
 // 向外共享路由
 module.exports = router

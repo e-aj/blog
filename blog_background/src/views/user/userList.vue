@@ -79,12 +79,23 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .user {
-  padding: 10px;
+  height: 100%;
+  position: relative;
+  width: 100%;
   .ant-table-wrapper {
     margin-top: 10px;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 85%;
+    width: 100%;
   }
   .ant-pagination {
     text-align: center;
+    height: 5%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
 </style>
