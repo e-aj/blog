@@ -59,7 +59,6 @@ export default defineComponent({
     // 定义状态管理器
     const store = useStore();
     const storeData = storeToRefs(store);
-    console.log(storeData);
 
     // 跳转首页
     const toIndex = () => {

@@ -6,7 +6,6 @@ import { storeToRefs } from "pinia";
 import { useStore } from "./../stores/user";
 const store = useStore();
 const data = storeToRefs(store);
-console.log(data.token.value);
 
 const instance = axios.create({
   baseURL: "http://192.168.12.62:3333/",
@@ -34,7 +33,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (res) => {
     // 对响应数据做什么
-    console.log(res);
     if (res.data.status !== 5) {
       return Promise.resolve(res.data);
     } else {

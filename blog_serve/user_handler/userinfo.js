@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs')
 // 获取信息
 exports.getUserinfo = (req, res) => {
   const sql = `select id,username,avatar from blog_user where username=?`;
-  console.log(req.user.username)
   db.query(sql, req.user.username, (err, result) => {
     if (err) return res.send({ status: 1, message: err.message });
 
@@ -91,13 +90,23 @@ exports.updateAvatar = (req,res)=>{
 
 // 获取用户列表
 exports.getUserList = (req,res)=>{
-  const sql = `select id,username,avatar from blog_user`
+  // const sql = `select id,username,avatar from blog_user`
+  let currentPage = req.body.currentPage
+  let pageSize = req.body.pageSize
+  const sql = `select id,username,avatar from blog_user where id >((${currentPage}-1)*${pageSize}) limit ${pageSize}`
+  const totalSql = `select count(id) as total from blog_user `
   db.query(sql,(err,result)=>{
     if(err) return res.send({status:1,message:err.message})
-    res.send({
-      status:0,
-      message:'获取用户列表成功！',
-      result
+    db.query(totalSql,(err,countResult)=>{
+      res.send({
+        status:0,
+        message:'获取用户列表成功！',
+        result,
+        pageSize,
+        currentPage,
+        total:countResult[0].total
+      })
     })
+    
   })
 }

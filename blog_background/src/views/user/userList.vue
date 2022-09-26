@@ -13,16 +13,18 @@
       </template>
     </a-table>
     <a-pagination
-      v-model:current="current"
-      :total="data.length"
-      :pageSizeOptions="pageSize"
+      v-model:current="page.currentPage"
+      :total="total"
+      v-model:pageSize="page.pageSize"
+      @change="changepage"
     />
   </div>
 </template>
 <script lang="ts">
 import { SmileOutlined, DownOutlined } from "@ant-design/icons-vue";
 import { defineComponent, onMounted, reactive, ref } from "vue";
-import { getUserList } from "../../api/user";
+import { number } from "vue-types";
+import { userList } from "../../api/user";
 export default defineComponent({
   components: {
     SmileOutlined,
@@ -56,23 +58,47 @@ export default defineComponent({
     let data = ref<DataItem[]>([]);
 
     // 分页
-    const current = ref<number>(1);
-    const pageSize = ["10", "20", "30", "40"];
+    // const currentPage = ref<number>(0);
+    // const sizePage = ref<number>(5);
+    interface pageTyep {
+      currentPage: number;
+      pageSize: number;
+    }
+    const page = reactive<pageTyep>({
+      currentPage: 1,
+      pageSize: 5,
+    });
+    const total = ref<number>(0);
+
+    // 获取用户列表
+    const getUserList = () => {
+      userList(page).then((res) => {
+        data.value = res.result;
+        total.value = res.total;
+      });
+    };
+
+    //改变页码
+    const changepage = (page: number, pageSize: number) => {
+      page = {
+        currentPage: page,
+        pageSize: pageSize,
+      };
+      getUserList();
+    };
 
     // 页面加载完成
     onMounted(() => {
       // 获取用户列表
-      getUserList().then((res) => {
-        data.value = res.result;
-        console.log(data);
-      });
+      getUserList();
     });
 
     return {
       columns,
       data,
-      current,
-      pageSize,
+      page,
+      total,
+      changepage,
     };
   },
 });

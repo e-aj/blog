@@ -19,10 +19,11 @@ export function updateAvatar(data:any){
 }
 
 // 用户列表
-export function getUserList() {
+export function userList(data) {
     return instance({
       url: "my/userList",
       method: 'post',
+      data
     })
   }
 
