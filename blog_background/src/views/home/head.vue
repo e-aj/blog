@@ -90,15 +90,28 @@
 <script lang="ts">
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { message, Upload } from "ant-design-vue";
+import { message } from "ant-design-vue";
 import { getUserinfo, updateAvatar, updatepwd } from "../../api/user";
+import { useStore } from "../../stores/user";
+import { storeToRefs } from "pinia";
 export default {
   setup() {
     // 定义router
     const router = useRouter();
 
+    // 定义store
+    const store = useStore();
+    const storeData = storeToRefs(store);
+
+    // 定义用户信息类型
+    interface userInfoType {
+      id: string;
+      username: string;
+      avatar: string;
+    }
+
     // 定义用户信息
-    const userInfo = reactive({
+    const userInfo = reactive<userInfoType>({
       id: "",
       username: "admin",
       avatar: "",
@@ -110,6 +123,7 @@ export default {
         userInfo.id = res.data.id;
         userInfo.username = res.data.username;
         userInfo.avatar = res.data.avatar;
+        storeData.userinfo = userInfo;
       });
     };
 
@@ -241,7 +255,6 @@ export default {
     // 改变信息
     const changePassword = () => {
       updatepwdVisible.value = true;
-      console.log("changePassword");
     };
 
     const updatepwdHandleOk = () => {

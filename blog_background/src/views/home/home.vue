@@ -67,7 +67,6 @@ export default defineComponent({
 
     //切换路由
     const menuSelect = (item: any, key: any, selectedKeys: any) => {
-      console.log(item, key, selectedKeys);
       router.push(item.key);
     };
 

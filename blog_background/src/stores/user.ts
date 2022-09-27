@@ -7,21 +7,19 @@ export const useStore = defineStore({
     // state：返回对象的函数
     state:()=>({
       token:'',
-      count:1
+      userinfo:{
+        id:"",
+        username:"",
+        avatar:""
+      }
     }),
     actions:{
-      countAdd(){
-        this.count++
-      },
       // setToken
       // setToken(token:string) {
       //   this.token = token
       // }
     },
     getters:{
-      countSum(state){
-        return state.count*2
-      }
     }
     
   })

@@ -38,7 +38,9 @@ app.use('/api',userRouter)
 const userinfoRouter = require('./router/userinfo')
 app.use('/my',userinfoRouter)
 
-
+// 文章分类
+const artcate = require('./router/artcate')
+app.use('/my',artcate)
 
 // 启动web服务器
 app.listen(3333,()=>{

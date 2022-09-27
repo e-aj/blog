@@ -60,7 +60,6 @@ export default defineComponent({
           store.$patch((storeData) => {
             storeData.token = res.token;
           });
-          console.log(storeData.token);
           message.info("登录成功");
           setTimeout(() => {
             router.push("/");

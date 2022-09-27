@@ -1,10 +1,17 @@
 blog_background
 	个人信息
-		1.登录	login
-		2.注册	register
-		3.修改密码	change_password
-		4.修改头像/资料	change_avatar
-		5.获取信息	userinfo
+		1.登录	login			√
+		2.注册	register			√
+		3.修改密码	change_password	√
+		4.修改头像/资料	change_avatar	√
+		5.获取信息	userinfo		√
+	用户
+		1.获取用户列表	userList（分页）	√
+	文章分类
+		1.获取分类列表	cates
+		2.添加分类	ddCates
+		3.更新分类	updateCate
+		4.删除分类	deleteCate/1
 	内容
 		5.发布文章	publish_article
 		6.文章列表	articleList
@@ -24,6 +31,11 @@ blog_web
 		password
 		is_delete（0为未删除，1为删除）
 		avatar
+	blog_article_cate(文章分类)
+		id
+		name
+		alias
+		is_delete(0为未删除，1为删除)
 	blog_article
 		id
 		title

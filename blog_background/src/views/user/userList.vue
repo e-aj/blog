@@ -23,7 +23,6 @@
 <script lang="ts">
 import { SmileOutlined, DownOutlined } from "@ant-design/icons-vue";
 import { defineComponent, onMounted, reactive, ref } from "vue";
-import { number } from "vue-types";
 import { userList } from "../../api/user";
 export default defineComponent({
   components: {
