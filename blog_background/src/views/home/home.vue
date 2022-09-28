@@ -22,6 +22,7 @@
             <MailOutlined />
           </template>
           <template #title>文章信息</template>
+          <a-menu-item key="articleCateList">分类列表</a-menu-item>
           <a-menu-item key="articleList">文章列表</a-menu-item>
         </a-sub-menu>
       </a-menu>
@@ -38,11 +39,8 @@
   </a-layout>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { message, Upload } from "ant-design-vue";
-import { getUserinfo, updateAvatar } from "../../api/user";
-import type { UploadChangeParam } from "ant-design-vue";
 import uploadAvatar from "../../components/uploadAvatar.vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../stores/user";

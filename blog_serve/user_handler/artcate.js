@@ -55,7 +55,7 @@ exports.deleteCateById = (req, res) => {
         if (result.affectedRows !== 1) return res.send({ status: 1, message: '删除分类失败！' })
 
         res.send({
-            status: 1,
+            status: 0,
             message: '删除分类成功！'
         })
     })
@@ -68,7 +68,7 @@ exports.getArtCateById = (req, res) => {
         if (err) return res.send({ status: 1, message: err })
         if (result.length !== 1) return res.send({ status: 1, message: '获取分类失败！' })
         res.send({
-            status: 1,
+            status: 0,
             message: '获取分类成功！',
             data: result[0]
         })
@@ -95,7 +95,7 @@ exports.updateArtCateById = (req, res) => {
             if (err) return res.send({ status: 1, message: err })
             if (result.affectedRows !== 1) return res.send({ status: 1, message: '更新分类失败！' })
             res.send({
-                status: 1,
+                status: 0,
                 message: '更新分类成功！',
             })
         })

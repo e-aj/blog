@@ -323,12 +323,14 @@ export default {
     }
   }
   .usernameInfo {
+    background-color: #fff;
     position: absolute;
     top: 65px;
     right: 50px;
     z-index: 9;
     cursor: pointer;
-    padding: 5px 0 10px 20px;
+    width: 100px;
+    text-align: center;
     div:hover {
       color: #1890ff;
     }
