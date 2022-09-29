@@ -47,7 +47,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   if (!token && to.name !== "login" && to.name !== "register") {
     message.warning("请登录账号");
