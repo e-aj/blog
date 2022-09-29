@@ -42,6 +42,13 @@ app.use('/my',userinfoRouter)
 const artcate = require('./router/artcate')
 app.use('/my',artcate)
 
+// 文章
+const article = require('./router/article')
+app.use('/my',article)
+
+// 托管静态资源文件
+app.use('/uploads',express.static('./uploads'))
+
 // 启动web服务器
 app.listen(3333,()=>{
     console.log('启动成功')
