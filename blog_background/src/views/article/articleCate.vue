@@ -22,7 +22,6 @@
       </template>
     </a-table>
   </div>
-
   <!-- 添加框 -->
   <a-modal
     v-model:visible="addVisible"
