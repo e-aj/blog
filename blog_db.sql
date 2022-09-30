@@ -11,7 +11,7 @@
  Target Server Version : 50738
  File Encoding         : 65001
 
- Date: 28/09/2022 18:11:56
+ Date: 30/09/2022 17:53:14
 */
 
 SET NAMES utf8mb4;
@@ -27,16 +27,53 @@ CREATE TABLE `blog_article_cate`  (
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `is_delete` tinyint(1) UNSIGNED ZEROFILL NULL DEFAULT 0 COMMENT '数据是否被删除\r\n0 没有被删除\r\n1 被删除\r\n',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_article_cate
 -- ----------------------------
-INSERT INTO `blog_article_cate` VALUES (1, 'vue', 'vue', 1);
-INSERT INTO `blog_article_cate` VALUES (2, 'react1', 'react1', 0);
+INSERT INTO `blog_article_cate` VALUES (1, 'vue', 'vue', 0);
+INSERT INTO `blog_article_cate` VALUES (2, 'react1', 'react2', 0);
 INSERT INTO `blog_article_cate` VALUES (3, 'js', 'js', 0);
-INSERT INTO `blog_article_cate` VALUES (4, 'html3', 'html3', 1);
+INSERT INTO `blog_article_cate` VALUES (4, 'html3', 'html3', 0);
 INSERT INTO `blog_article_cate` VALUES (5, '1', '1', 1);
+INSERT INTO `blog_article_cate` VALUES (6, '12', '12', 0);
+
+-- ----------------------------
+-- Table structure for blog_articles
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_articles`;
+CREATE TABLE `blog_articles`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+  `cover_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `pub_date` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `is_delete` int(255) UNSIGNED ZEROFILL NULL DEFAULT NULL,
+  `cate_id` int(11) NULL DEFAULT NULL,
+  `author_id` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_articles
+-- ----------------------------
+INSERT INTO `blog_articles` VALUES (1, 'html', 'html', NULL, '2022-09-29 16:25:48.592', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (9, 'htm2', 'html', '', '2022-09-30 10:14:25.224', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (10, 'htm2', 'html', '', '2022-09-30 14:38:15.379', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (11, 'htm2', 'html', '', '2022-09-30 14:38:17.455', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (12, 'htm2', 'html', '', '2022-09-30 14:38:18.498', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (13, 'htm2', 'html', '', '2022-09-30 14:38:19.209', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (14, 'htm2', 'html', '', '2022-09-30 14:38:20.008', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (15, 'htm2', 'html', '', '2022-09-30 14:38:20.761', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (16, 'htm2', 'html', '', '2022-09-30 14:38:21.547', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (17, 'htm2', 'html', '', '2022-09-30 14:38:22.269', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (18, 'htm2', 'html', '', '2022-09-30 14:38:22.996', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (19, 'htm2', 'html', '', '2022-09-30 14:38:23.781', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (20, 'htm2', 'html', '', '2022-09-30 14:38:24.543', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (21, 'htm2', 'html', '', '2022-09-30 14:38:25.261', NULL, NULL, NULL, 3);
+INSERT INTO `blog_articles` VALUES (22, 'htm2', 'html', '', '2022-09-30 14:38:25.994', NULL, NULL, NULL, 3);
 
 -- ----------------------------
 -- Table structure for blog_user
