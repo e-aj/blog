@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article">
     <a-breadcrumb :routes="routes">
       <template #itemRender="{ route, paths }">
         <span v-if="routes.indexOf(route) === routes.length - 1">
@@ -36,14 +36,14 @@
   </div>
 
   <!-- 添加框 -->
-  <!-- <a-modal
+  <a-modal
     v-model:visible="addVisible"
     title="添加分类"
     @ok="addHandleOk"
     cancelText="取消"
     okText="确定添加"
   >
-    <a-form
+    <!-- <a-form
       :model="addArtCateData"
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 18 }"
@@ -56,8 +56,8 @@
       <a-form-item label="别名" name="alias">
         <a-input v-model:value="addArtCateData.alias" />
       </a-form-item>
-    </a-form>
-  </a-modal> -->
+    </a-form> -->
+  </a-modal>
   <!-- 修改框 -->
   <!-- <a-modal
     v-model:visible="updateVisible"
@@ -97,12 +97,15 @@ import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { message } from "ant-design-vue";
 import { defineComponent, onMounted, ref } from "vue";
 import { getArticleListApi } from "../../api/article";
+import { useRouter } from "vue-router";
 interface Route {
   path: string;
   breadcrumbName: string;
 }
 export default defineComponent({
   setup() {
+    // 定义路由
+    const router = useRouter();
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -162,9 +165,14 @@ export default defineComponent({
     const updateVisible = ref<boolean>(false);
     const deleteVisible = ref<boolean>(false);
 
+    const addHandleOk = ref<boolean>(false);
+    const updateHandleOk = ref<boolean>(false);
+    const deleteHandleOk = ref<boolean>(false);
+
     // 添加文章
     const addArticle = () => {
-      addVisible.value = true;
+      router.push("/addArticle");
+      // addVisible.value = true;
     };
 
     // 定义分页
@@ -206,6 +214,8 @@ export default defineComponent({
       total,
       pageSize,
       locale: zhCN,
+      addVisible,
+      addHandleOk,
       addArticle,
       changePage,
     };
@@ -214,11 +224,23 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.ant-btn {
-  margin: 10px 0;
-  left: 90%;
-}
-.ant-tag {
-  cursor: pointer;
+.article {
+  height: 100%;
+  position: relative;
+  width: 100%;
+  .ant-btn {
+    margin: 10px 0;
+    left: 90%;
+  }
+  .ant-tag {
+    cursor: pointer;
+  }
+  .ant-pagination {
+    text-align: center;
+    height: 5%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
 }
 </style>
