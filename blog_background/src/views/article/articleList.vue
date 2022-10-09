@@ -139,7 +139,7 @@ export default defineComponent({
       },
       {
         title: "分类",
-        dataIndex: "cate",
+        dataIndex: "cate_id",
       },
       {
         title: "作者",
