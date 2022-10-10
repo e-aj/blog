@@ -35,5 +35,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UploadAvatar: typeof import('./src/components/uploadAvatar.vue')['default']
+    UploadImg: typeof import('./src/components/uploadImg.vue')['default']
   }
 }

@@ -1,11 +1,20 @@
 import instance from './http'
 
 // 获取文章列表
-export function getArticleListApi(data:any){
+export function getArticleListApi(data:any,formData:any){
+    console.log(formData)
     return instance({
         url:'my/getArticleList',
         method:'post',
-        data
+        data:{
+            formData,
+            data
+        }   
+        ,
+        headers:{
+            'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundarynl6gT1BKdPWIejNq'
+        },
+
     })
 }
 

@@ -17,7 +17,17 @@
         </a-form-item>
         <a-form-item has-feedback label="封面" name="title">
           <!-- <a-input v-model:value="articleData.title" type="text" /> -->
-          <input type="file" />
+          <!-- <input type="file" /> -->
+          <div class="uploadImg">
+            <div v-if="isUpload" class="img">
+              <img src="" alt="" />
+            </div>
+            <div v-else class="add" @click="addAvatar">
+              +
+              <img :src="addImg" alt="" v-show="addImg" />
+              <input type="file" ref="file" @change="addChange" />
+            </div>
+          </div>
         </a-form-item>
         <a-form-item has-feedback label="分类" name="title">
           <a-select
@@ -171,14 +181,16 @@ export default defineComponent({
     interface articleDataType {
       title: string;
       content: string;
-      cate_id: number;
+      cate_id?: number;
+      cover_img?: File;
     }
 
     // 文章信息
     const articleData = reactive<articleDataType>({
       title: "",
       content: valueHtml.value,
-      cate_id: "",
+      cate_id: undefined,
+      cover_img: undefined,
     });
 
     // 分类信息
@@ -193,10 +205,29 @@ export default defineComponent({
       articleData.cate_id = value;
     };
 
+    // 上传封面
+    const isUpload = ref<boolean>(false);
+    //input file dom
+    const file = ref(null);
+    const addAvatar = () => {
+      file.value.dispatchEvent(new MouseEvent("click"));
+    };
+    // 更新的图片
+    const addImg = ref<string>("");
+    // input change 事件
+    let formData = new FormData();
+    const addChange = (e) => {
+      let img = e.target.files[0]; //获取到上传文件的对象
+      articleData.cover_img = img;
+      formData.append("file", img);
+
+      addImg.value = URL.createObjectURL(img);
+    };
+
     // 保存
     const saveArticle = () => {
-      console.log(articleData);
-      addArticle(articleData).then((res) => {
+      console.log(formData.get("file"));
+      addArticle(formData).then((res) => {
         if (res.status === 0) {
           message.success(res.message);
         } else {
@@ -215,6 +246,9 @@ export default defineComponent({
       editorConfig,
       articleData,
       cateOption,
+      isUpload,
+      addImg,
+      file,
       handleCreated,
       handleChange,
       handleDestroyed,
@@ -227,7 +261,53 @@ export default defineComponent({
       disable,
       saveArticle,
       selectOk,
+      addAvatar,
+      addChange,
     };
   },
 });
 </script>
+
+<style lang="less" scoped>
+.addArticle {
+  .container {
+    width: 98%;
+    margin: 20px auto 0;
+    .uploadImg {
+      border: 1px solid red;
+      width: 150px;
+      height: 150px;
+      margin: 0 10px;
+      display: inline-block;
+      border: 1px solid #ccc;
+      .add {
+        line-height: 150px;
+        text-align: center;
+        font-size: 40px;
+        color: #ccc;
+        cursor: pointer;
+        position: relative;
+        img {
+          width: 150px;
+          height: 150px;
+          position: absolute;
+          left: 0;
+        }
+        input {
+          display: none;
+        }
+      }
+    }
+  }
+  .save {
+    display: flex;
+    justify-content: center;
+    .ant-btn {
+      margin: 20px 50px;
+      width: 100px;
+      height: 40px;
+      border-radius: 10px;
+    }
+  }
+}
+</style>

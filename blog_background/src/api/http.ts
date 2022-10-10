@@ -12,7 +12,7 @@ const instance = axios.create({
   // baseURL: "http://192.168.191.27:3333/",
   timeout: 5000,
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "application/json multipart/form-data",
     Authorization: String(localStorage.getItem("token")),
   },
 });
@@ -21,6 +21,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // config.data = qs.stringify(config.data)
+    console.log(config)
     config.headers.Authorization = String(localStorage.getItem("token"))
     return config;
   },

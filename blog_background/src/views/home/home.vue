@@ -41,15 +41,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import uploadAvatar from "../../components/uploadAvatar.vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../stores/user";
 import Head from "./head.vue";
 export default defineComponent({
-  components: {
-    uploadAvatar,
-    Head,
-  },
   setup() {
     // 定义router
     const router = useRouter();
