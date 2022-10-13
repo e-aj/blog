@@ -190,7 +190,7 @@ export default defineComponent({
           total.value = res.total;
           articleList.value = res.data;
         } else {
-          message.warning("获取文章列表失败！");
+          message.warning(res.message);
         }
       });
     };

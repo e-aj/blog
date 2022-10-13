@@ -12,7 +12,7 @@ const instance = axios.create({
   // baseURL: "http://192.168.191.27:3333/",
   timeout: 5000,
   headers: {
-    "Content-Type": "application/json multipart/form-data",
+    "Content-Type": "application/json",
     Authorization: String(localStorage.getItem("token")),
   },
 });

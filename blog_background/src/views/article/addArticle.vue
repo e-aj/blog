@@ -182,7 +182,6 @@ export default defineComponent({
       title: string;
       content: string;
       cate_id?: number;
-      cover_img?: File;
     }
 
     // 文章信息
@@ -190,7 +189,6 @@ export default defineComponent({
       title: "",
       content: valueHtml.value,
       cate_id: undefined,
-      cover_img: undefined,
     });
 
     // 分类信息
@@ -218,18 +216,20 @@ export default defineComponent({
     let formData = new FormData();
     const addChange = (e) => {
       let img = e.target.files[0]; //获取到上传文件的对象
-      articleData.cover_img = img;
+      // articleData.cover_img = img;
       formData.append("file", img);
-
       addImg.value = URL.createObjectURL(img);
     };
 
     // 保存
     const saveArticle = () => {
-      console.log(formData.get("file"));
+      formData.append("cate_id", String(articleData.cate_id));
+      formData.append("title", String(articleData.title));
+      formData.append("content", String(articleData.content));
       addArticle(formData).then((res) => {
         if (res.status === 0) {
           message.success(res.message);
+          formData = new FormData();
         } else {
           message.success(res.message);
         }

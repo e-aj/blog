@@ -45,6 +45,9 @@ import { storeToRefs } from "pinia";
 import { useStore } from "../../stores/user";
 import Head from "./head.vue";
 export default defineComponent({
+  components: {
+    Head,
+  },
   setup() {
     // 定义router
     const router = useRouter();

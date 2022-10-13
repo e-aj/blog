@@ -5,17 +5,17 @@ const path = require('path')
 exports.addArticle = (req,res)=>{
     // 手动判断是否上传了文章封面
     // if(!req.file || req.file.filedname !== 'cover_img') return res.send({status:0,message:'请上传封面！'})
-
-    console.log(req.body)
+    
+    console.log(req.file)
+    console.log(req.body,2)
     const articleInfo = {
         ...req.body,
         // 文章封面在服务器存放路径
         cover_img:req.file?path.join('../uploads',req.file.filename):'',
         pub_date:new Date(),
         author_id:req.user.id
-
     }
-
+  
 
 
    const sql = `insert into blog_articles set ?`
@@ -36,7 +36,7 @@ exports.getArticle =(req,res)=>{
     db.query(sql,req.body.id,(err,result)=>{
        if (err) return res.send({status:1,message:err})
 
-       if(result.length === 0) return res.send({status:1,message:'获取文章失败！'})
+    //    if(result.length === 0) return res.send({status:1,message:'获取文章失败！'})
        
        res.send({
            status:0,
@@ -54,12 +54,15 @@ exports.getArticleList = (req,res)=>{
     const sql = `select * from blog_articles `
 
    db.query(sql,(err,result)=>{
-       if(err) return res.send({status:1,messageerr})
+       if(err) return res.send({status:1,message:err})
        
-       if(result.length === 0 ) res.send({
-           status:1,
-           message:'暂时没有文章！'
-       })
+       if(result.length === 0 ){
+        res.send({
+            status:1,
+            message:'暂时没有文章！'
+        })
+        return
+       }
        let total = result.length
        let data=result.splice((currentPage-1)*pageSize,pageSize)
        res.send({
@@ -69,4 +72,5 @@ exports.getArticleList = (req,res)=>{
            total
        })
    })
+
 }

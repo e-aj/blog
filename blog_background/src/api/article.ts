@@ -1,29 +1,25 @@
 import instance from './http'
 
 // 获取文章列表
-export function getArticleListApi(data:any,formData:any){
-    console.log(formData)
+export function getArticleListApi(data:any){
     return instance({
         url:'my/getArticleList',
         method:'post',
-        data:{
-            formData,
-            data
-        }   
-        ,
-        headers:{
-            'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundarynl6gT1BKdPWIejNq'
-        },
+        data,
+       
 
     })
 }
 
 // 添加文章
-export function addArticle(data:any){
+export function addArticle(formData:any){
     return instance({
         url:'my/addArticle',
         method:'post',
-        data
+        data:formData,
+        headers:{
+            'Content-Type': 'multipart/form-data',
+        },
     })
 }
 
