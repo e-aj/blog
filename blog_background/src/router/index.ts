@@ -3,13 +3,17 @@ import { message } from "ant-design-vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: "/",
+    redirect: "/index",
+  },
+  {
     path: "/home",
     name: "home",
     component: () => import("../views/home/home.vue"),
     children:
     [
       {
-        path:'/',
+        path:'/index',
         name:'index',
         component:()=>import("../views/home/index.vue"),
       },

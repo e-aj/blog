@@ -124,7 +124,6 @@ export default defineComponent({
     onBeforeUnmount(() => {
       const editor = editorRef.value;
       if (editor == null) return;
-
       editor.destroy();
     });
 
@@ -178,6 +177,7 @@ export default defineComponent({
       editor.disable();
     };
 
+    // 数据类型
     interface articleDataType {
       title: string;
       content: string;

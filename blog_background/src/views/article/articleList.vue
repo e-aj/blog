@@ -16,12 +16,12 @@
     </a-button>
 
     <a-table :columns="columns" :pagination="false" :data-source="articleList">
-      <!-- <template #bodyCell="{ column, record }">
+      <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'edit'">
-          <a-tag color="red" @click="deleteArttCate(record)">删除</a-tag>
-          <a-tag color="green" @click="updateArtCate(record)">编辑</a-tag>
+          <a-tag color="red" @click="deleteArticle(record)">删除</a-tag>
+          <a-tag color="green" @click="updateArticle(record)">编辑</a-tag>
         </template>
-      </template> -->
+      </template>
     </a-table>
 
     <a-config-provider :locale="locale">
@@ -145,6 +145,10 @@ export default defineComponent({
         title: "作者",
         dataIndex: "author_id",
       },
+      {
+        title: "操作",
+        dataIndex: "edit",
+      },
     ];
 
     interface articleListType {
@@ -195,6 +199,12 @@ export default defineComponent({
       });
     };
 
+    // 删除文章
+    const deleteArticle = () => {};
+
+    // 修改文章
+    const updateArticle = () => {};
+
     // 切换页码
     const changePage = (page: number, pageSize: number) => {
       currentPage.value = page;
@@ -218,6 +228,8 @@ export default defineComponent({
       addHandleOk,
       addArticle,
       changePage,
+      deleteArticle,
+      updateArticle,
     };
   },
 });

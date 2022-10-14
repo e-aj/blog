@@ -51,8 +51,6 @@ app.use('/my',artcate)
 const article = require('./router/article')
 app.use('/my',article)
 
-// 创建 multer 的实例对象，通过 dest 属性指定文件的存放路径
-const upload = multer({ dest: path.join(__dirname, '../uploads') })
 
 // 启动web服务器
 app.listen(3333,()=>{

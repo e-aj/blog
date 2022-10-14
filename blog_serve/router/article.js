@@ -20,6 +20,12 @@ router.post('/getArticle',article_handler.getArticle)
 // 获取文章列表
 router.post('/getArticleList',article_handler.getArticleList)
 
+// 删除文章
+router.post('/deleteArticle',article_handler.deleteArticle)
+
+// 修改文章
+router.post('/updateArticle',upload.single('file'),article_handler.updateArticle)
+
 
 // 向外共享路由对象
 module.exports = router
