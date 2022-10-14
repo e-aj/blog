@@ -37,7 +37,7 @@ exports.getArticle = (req, res) => {
     res.send({
       status: 0,
       message: "获取文章成功！",
-      data: result,
+      data: result[0],
     });
   });
 };

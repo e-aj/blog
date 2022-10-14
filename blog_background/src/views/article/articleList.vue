@@ -18,8 +18,8 @@
     <a-table :columns="columns" :pagination="false" :data-source="articleList">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'edit'">
-          <a-tag color="red" @click="deleteArticle(record)">删除</a-tag>
-          <a-tag color="green" @click="updateArticle(record)">编辑</a-tag>
+          <a-tag color="red" @click="deleteArt(record)">删除</a-tag>
+          <a-tag color="green" @click="updateArt(record)">修改</a-tag>
         </template>
       </template>
     </a-table>
@@ -82,22 +82,23 @@
     </a-form>
   </a-modal> -->
   <!-- 删除确认 -->
-  <!-- <a-modal
+  <a-modal
     v-model:visible="deleteVisible"
     title="删除分类"
     @ok="deleteHandleOk"
     cancelText="取消"
     okText="确定删除"
   >
-    <p>确认删除？</p>
-  </a-modal> -->
+    <p>确认删除此文章？</p>
+  </a-modal>
 </template>
 <script lang="ts">
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { message } from "ant-design-vue";
 import { defineComponent, onMounted, ref } from "vue";
-import { getArticleListApi } from "../../api/article";
+import { getArticleList, deleteArticle } from "../../api/article";
 import { useRouter } from "vue-router";
+import { number } from "vue-types";
 interface Route {
   path: string;
   breadcrumbName: string;
@@ -170,8 +171,8 @@ export default defineComponent({
     const deleteVisible = ref<boolean>(false);
 
     const addHandleOk = ref<boolean>(false);
-    const updateHandleOk = ref<boolean>(false);
-    const deleteHandleOk = ref<boolean>(false);
+    // const updateHandleOk = ref<boolean>(false);
+    // const deleteHandleOk = ref<boolean>(false);
 
     // 添加文章
     const addArticle = () => {
@@ -184,12 +185,13 @@ export default defineComponent({
     const pageSize = ref<number>(10);
     const total = ref<number>();
 
-    const getArticleList = () => {
+    // 获取文章列表
+    const getArtList = () => {
       let data = {
         currentPage: currentPage.value,
         pageSize: pageSize.value,
       };
-      getArticleListApi(data).then((res) => {
+      getArticleList(data).then((res) => {
         if (res.status === 0) {
           total.value = res.total;
           articleList.value = res.data;
@@ -200,19 +202,38 @@ export default defineComponent({
     };
 
     // 删除文章
-    const deleteArticle = () => {};
+    const deleteId = ref<number>();
+    // 删除框显示
+    const deleteArt = (record: any) => {
+      deleteVisible.value = true;
+      deleteId.value = record.id;
+    };
+    // 删除确定
+    const deleteHandleOk = () => {
+      deleteArticle(deleteId.value).then((res) => {
+        if (res.status === 0) {
+          message.success(res.message);
+          deleteVisible.value = false;
+          getArtList();
+        } else {
+          message.warn(res.message);
+        }
+      });
+    };
 
-    // 修改文章
-    const updateArticle = () => {};
+    // 查看修改文章
+    const updateArt = (record: any) => {
+      router.push({ name: "updateArticle", params: { id: record.id } });
+    };
 
     // 切换页码
     const changePage = (page: number, pageSize: number) => {
       currentPage.value = page;
-      getArticleList();
+      getArtList();
     };
 
     onMounted(() => {
-      getArticleList();
+      getArtList();
     });
 
     return {
@@ -226,10 +247,12 @@ export default defineComponent({
       locale: zhCN,
       addVisible,
       addHandleOk,
+      deleteVisible,
       addArticle,
       changePage,
-      deleteArticle,
-      updateArticle,
+      deleteArt,
+      updateArt,
+      deleteHandleOk,
     };
   },
 });
