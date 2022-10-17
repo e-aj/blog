@@ -1,14 +1,16 @@
 const db = require("../db");
 const path = require("path");
+const fs = require("fs");
 
 // 添加文章
 exports.addArticle = (req, res) => {
   // 手动判断是否上传了文章封面
   // if(!req.file || req.file.filedname !== 'cover_img') return res.send({status:0,message:'请上传封面！'})
+  console.log(req.file);
   const articleInfo = {
     ...req.body,
     // 文章封面在服务器存放路径
-    cover_img: req.file ? path.join("../uploads", req.file.filename) : "",
+    cover_img: req.file ? path.join("./uploads", req.file.filename) : "",
     pub_date: new Date(),
     author_id: req.user.id,
   };
@@ -32,13 +34,43 @@ exports.getArticle = (req, res) => {
   db.query(sql, req.body.id, (err, result) => {
     if (err) return res.send({ status: 1, message: err });
 
-    //    if(result.length === 0) return res.send({status:1,message:'获取文章失败！'})
+    if (result.length === 0)
+      return res.send({ status: 1, message: "获取文章失败！" });
 
-    res.send({
-      status: 0,
-      message: "获取文章成功！",
-      data: result[0],
-    });
+    let articleDetail = result[0];
+
+    const readFileFun = () => {
+      return new Promise((resolve, reject) => {
+        fs.readFile(result[0].cover_img, (err, data) => {
+          if (err) {
+            console.log(err);
+          }
+          var base64Img = `data:image/jpeg;base64,${data.toString("base64")}`;
+          resolve(base64Img);
+        });
+      });
+    };
+
+    if (articleDetail.cover_img) {
+      readFileFun()
+        .then((base64Img) => {
+          articleDetail.cover_img = base64Img;
+          res.send({
+            status: 0,
+            message: "获取文章成功！",
+            data: articleDetail,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      res.send({
+        status: 0,
+        message: "获取文章成功！",
+        data: articleDetail,
+      });
+    }
   });
 };
 
@@ -91,7 +123,7 @@ exports.updateArticle = (req, res) => {
   const articleInfo = {
     ...req.body,
     // 文章封面在服务器存放路径
-    cover_img: req.file ? path.join("../uploads", req.file.filename) : "",
+    cover_img: req.file ? path.join("./uploads", req.file.filename) : "",
     pub_date: new Date(),
     author_id: req.user.id,
   };

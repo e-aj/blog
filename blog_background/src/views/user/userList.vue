@@ -107,14 +107,21 @@ export default defineComponent({
   height: 100%;
   position: relative;
   width: 100%;
-  .ant-table-wrapper {
-    margin-top: 10px;
-    position: absolute;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 85%;
-    width: 100%;
+  .ant-table {
+    .ant-table-wrapper {
+      margin-top: 10px;
+      position: absolute;
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 85%;
+      width: 100%;
+    }
+    img {
+      width: 150px;
+      height: 150px;
+    }
   }
+
   .ant-pagination {
     text-align: center;
     height: 5%;

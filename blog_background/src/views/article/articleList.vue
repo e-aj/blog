@@ -98,7 +98,6 @@ import { message } from "ant-design-vue";
 import { defineComponent, onMounted, ref } from "vue";
 import { getArticleList, deleteArticle } from "../../api/article";
 import { useRouter } from "vue-router";
-import { number } from "vue-types";
 interface Route {
   path: string;
   breadcrumbName: string;
@@ -129,10 +128,6 @@ export default defineComponent({
       {
         title: "标题",
         dataIndex: "title",
-      },
-      {
-        title: "封面",
-        dataIndex: "cover_img",
       },
       {
         title: "编辑时间",

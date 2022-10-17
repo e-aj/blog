@@ -22,11 +22,11 @@ export function addArticle(formData:any){
 }
 
 // 获取文章详情
-export  function getArticle(id:any){
+export  function getArticle(id:number){
     return instance({
         url:'my/getArticle',
         method:'post',
-        data:id
+        data:{"id":id}
     })
 }
 

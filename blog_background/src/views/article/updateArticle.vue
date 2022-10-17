@@ -16,16 +16,11 @@
           <a-input v-model:value="articleData.title" type="text" />
         </a-form-item>
         <a-form-item has-feedback label="封面" name="title">
-          <!-- <a-input v-model:value="articleData.title" type="text" /> -->
-          <!-- <input type="file" /> -->
-          <div class="uploadImg">
-            <div v-if="isUpload" class="img">
-              <img src="" alt="" />
-            </div>
-            <div v-else class="add" @click="addAvatar">
+          <div class="uploadImg" @click="addAvatar">
+            <img :src="articleData.cover_img" alt="" v-show="isUpload" />
+            <div class="add" v-show="!isUpload">
               +
-              <img :src="addImg" alt="" v-show="addImg" />
-              <input type="file" ref="file" @change="addChange" />
+              <input type="file" ref="uploadFile" @change="addChange" />
             </div>
           </div>
         </a-form-item>
@@ -81,7 +76,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { getArticle, updateArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 interface Route {
   path: string;
   breadcrumbName: string;
@@ -89,9 +84,6 @@ interface Route {
 export default defineComponent({
   components: { Editor, Toolbar },
   setup() {
-    // 接收路由传的参数
-    const id = useRoute().params;
-
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -107,6 +99,9 @@ export default defineComponent({
         breadcrumbName: "修改文章",
       },
     ]);
+
+    // 定义router
+    const router = useRouter();
 
     // 编辑器实例，必须用 shallowRef，重要！
     const editorRef = shallowRef();
@@ -183,27 +178,34 @@ export default defineComponent({
 
     // 数据类型
     interface articleDataType {
+      id: number;
       title: string;
       content: string;
       cate_id?: number;
+      cover_img?: string;
     }
 
     // 文章信息
     const articleData = reactive<articleDataType>({
+      id: 0,
       title: "",
       content: valueHtml.value,
       cate_id: undefined,
+      cover_img: undefined,
     });
+
+    // 接收路由传的参数
+    articleData.id = Number(useRoute().params.id);
+
     // 获取文章信息
     const getArt = () => {
-      console.log(id);
-      getArticle(id).then((res) => {
+      getArticle(articleData.id).then((res) => {
         if (res.status === 0) {
           articleData.title = res.data.title;
           articleData.cate_id = res.data.cate_id;
           articleData.content = res.data.content;
-          console.log(articleData);
-          message.success(res.message);
+          articleData.cover_img = res.data.cover_img;
+          isUpload.value = articleData.cover_img ? true : false;
         } else {
           message.warn(res.message);
         }
@@ -226,30 +228,40 @@ export default defineComponent({
     // 上传封面
     const isUpload = ref<boolean>(false);
     //input file dom
-    const file = ref(null);
+    const uploadFile = ref(null);
     const addAvatar = () => {
-      file.value.dispatchEvent(new MouseEvent("click"));
+      uploadFile.value.dispatchEvent(new MouseEvent("click"));
     };
     // 更新的图片
-    const addImg = ref<string>("");
     // input change 事件
     let formData = new FormData();
-    const addChange = (e) => {
+    const addChange = (e: any) => {
       let img = e.target.files[0]; //获取到上传文件的对象
-      // articleData.cover_img = img;
       formData.append("file", img);
-      addImg.value = URL.createObjectURL(img);
+      var reader = new FileReader();
+      reader.readAsDataURL(img); //参数为上传的文件对象 传值进去就会触发以下onload方法
+      reader.onload = (i: any) => {
+        // e.target.result为转换成的base64编码
+        // console.log(i.target.result)
+        articleData.cover_img = i.target.result;
+      };
+      isUpload.value = true;
+      console.log(articleData.cover_img);
     };
 
     // 保存
     const saveArticle = () => {
+      formData.append("id", String(articleData.id));
       formData.append("cate_id", String(articleData.cate_id));
       formData.append("title", String(articleData.title));
       formData.append("content", String(articleData.content));
-      addArticle(formData).then((res) => {
+      updateArticle(formData).then((res) => {
+        formData = new FormData();
         if (res.status === 0) {
           message.success(res.message);
-          formData = new FormData();
+          setTimeout(() => {
+            router.push("articleList");
+          }, 1000);
         } else {
           message.success(res.message);
         }
@@ -267,8 +279,7 @@ export default defineComponent({
       articleData,
       cateOption,
       isUpload,
-      addImg,
-      file,
+      uploadFile,
       handleCreated,
       handleChange,
       handleDestroyed,
@@ -300,6 +311,12 @@ export default defineComponent({
       margin: 0 10px;
       display: inline-block;
       border: 1px solid #ccc;
+      cursor: pointer;
+      img {
+        width: 150px;
+        height: 150px;
+        position: absolute;
+      }
       .add {
         line-height: 150px;
         text-align: center;
@@ -307,12 +324,7 @@ export default defineComponent({
         color: #ccc;
         cursor: pointer;
         position: relative;
-        img {
-          width: 150px;
-          height: 150px;
-          position: absolute;
-          left: 0;
-        }
+
         input {
           display: none;
         }

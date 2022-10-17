@@ -15,7 +15,6 @@
           </template>
           <template #title>个人信息</template>
           <a-menu-item key="userList">用户列表</a-menu-item>
-          <a-menu-item key="2">权限管理</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #icon>
