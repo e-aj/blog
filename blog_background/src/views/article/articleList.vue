@@ -130,8 +130,12 @@ export default defineComponent({
         dataIndex: "title",
       },
       {
-        title: "编辑时间",
+        title: "创建时间",
         dataIndex: "pub_date",
+      },
+      {
+        title: "最后编辑时间",
+        dataIndex: "last_date",
       },
       {
         title: "分类",
@@ -152,6 +156,7 @@ export default defineComponent({
       title?: string;
       cover_img?: File;
       pub_date?: string;
+      last_date?: string;
       state?: string;
       is_delete?: number;
       cate_id?: number;

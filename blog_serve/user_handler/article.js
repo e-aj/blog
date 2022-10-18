@@ -1,9 +1,14 @@
 const db = require("../db");
 const path = require("path");
 const fs = require("fs");
-
+const fullZero = (num)=>{
+  num = num.toString()
+	return num[1] ? num : '0' + num
+}
 // 添加文章
 exports.addArticle = (req, res) => {
+  const date = new Date()
+  let nowDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}  ${fullZero(date.getHours())}:${fullZero(date.getMinutes())}:${fullZero(date.getSeconds())}`
   // 手动判断是否上传了文章封面
   // if(!req.file || req.file.filedname !== 'cover_img') return res.send({status:0,message:'请上传封面！'})
   console.log(req.file);
@@ -11,9 +16,11 @@ exports.addArticle = (req, res) => {
     ...req.body,
     // 文章封面在服务器存放路径
     cover_img: req.file ? path.join("./uploads", req.file.filename) : "",
-    pub_date: new Date(),
+    pub_date: nowDate,
+    last_date: nowDate,
     author_id: req.user.id,
   };
+
 
   const sql = `insert into blog_articles set ?`;
 
@@ -120,11 +127,13 @@ exports.deleteArticle = (req, res) => {
 
 // 修改文章
 exports.updateArticle = (req, res) => {
+  const date = new Date()
+  let nowDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}  ${fullZero(date.getHours())}:${fullZero(date.getMinutes())}:${fullZero(date.getSeconds())}`
   const articleInfo = {
     ...req.body,
     // 文章封面在服务器存放路径
     cover_img: req.file ? path.join("./uploads", req.file.filename) : "",
-    pub_date: new Date(),
+    last_date: nowDate,
     author_id: req.user.id,
   };
   const sql = `update blog_articles set ? where id=?`;

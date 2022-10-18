@@ -32,7 +32,7 @@ import { login } from "../../api/login";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useStore } from "../../stores/user";
+import { useStore } from "../../stores/store";
 
 interface FormState {
   username: string;
@@ -49,7 +49,7 @@ export default defineComponent({
     // 定义路由
     const router = useRouter();
 
-    // 定义状态管理器
+    // // 定义状态管理器
     const store = useStore();
     const storeData = storeToRefs(store);
 

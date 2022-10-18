@@ -77,6 +77,9 @@ import { getArticle, updateArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "../../stores/store";
+import { storeToRefs } from "pinia";
+
 interface Route {
   path: string;
   breadcrumbName: string;
@@ -84,6 +87,10 @@ interface Route {
 export default defineComponent({
   components: { Editor, Toolbar },
   setup() {
+    // 定义store
+    const store = useStore();
+    const { upArticleId } = storeToRefs(store);
+
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -108,13 +115,6 @@ export default defineComponent({
 
     // 内容 HTML
     const valueHtml = ref("");
-
-    // 模拟 ajax 异步获取内容
-    onMounted(() => {
-      setTimeout(() => {
-        articleData.content = "";
-      }, 1500);
-    });
 
     const toolbarConfig = {};
     const editorConfig = { placeholder: "请输入内容..." };
@@ -195,7 +195,12 @@ export default defineComponent({
     });
 
     // 接收路由传的参数
-    articleData.id = Number(useRoute().params.id);
+    console.log(upArticleId.value);
+    upArticleId.value = Number(useRoute().params.id)
+      ? Number(useRoute().params.id)
+      : upArticleId.value;
+    // console.log(upArticleId.value);
+    // articleData.id = upArticleId.value;
 
     // 获取文章信息
     const getArt = () => {
@@ -246,7 +251,6 @@ export default defineComponent({
         articleData.cover_img = i.target.result;
       };
       isUpload.value = true;
-      console.log(articleData.cover_img);
     };
 
     // 保存

@@ -2,10 +2,10 @@ import axios from "axios";
 
 import qs from "qs";
 import { message } from "ant-design-vue";
-import { storeToRefs } from "pinia";
-import { useStore } from "./../stores/user";
-const store = useStore();
-const data = storeToRefs(store);
+// import { storeToRefs } from "pinia";
+// import { useStore } from "../stores/store";
+// const store = useStore();
+// const data = storeToRefs(store);
 
 const instance = axios.create({
   baseURL: "http://192.168.12.62:3333/",
@@ -37,7 +37,6 @@ instance.interceptors.response.use(
       return Promise.resolve(res.data);
     } else {
       localStorage.clear('token')
-      console.log(res.data.status);
     }
   },
   (error) => {

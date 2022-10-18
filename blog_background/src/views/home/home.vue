@@ -40,8 +40,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useStore } from "../../stores/user";
+// import { storeToRefs } from "pinia";
+// import { useStore } from "../../stores/user";
 import Head from "./head.vue";
 export default defineComponent({
   components: {
@@ -52,8 +52,8 @@ export default defineComponent({
     const router = useRouter();
 
     // 定义状态管理器
-    const store = useStore();
-    const storeData = storeToRefs(store);
+    // const store = useStore();
+    // const storeData = storeToRefs(store);
 
     // 跳转首页
     const toIndex = () => {
