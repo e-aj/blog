@@ -36,23 +36,17 @@
       </a-form>
       <div style="border: 1px solid #ccc; margin-top: 10px">
         <Toolbar
+          style="border-bottom: 1px solid #ccc"
           :editor="editorRef"
           :defaultConfig="toolbarConfig"
           :mode="mode"
-          style="border-bottom: 1px solid #ccc"
         />
         <Editor
+          style="height: 500px; overflow-y: hidden"
+          v-model="articleData.content"
           :defaultConfig="editorConfig"
           :mode="mode"
-          v-model="articleData.content"
-          style="height: 400px; overflow-y: hidden"
           @onCreated="handleCreated"
-          @onChange="handleChange"
-          @onDestroyed="handleDestroyed"
-          @onFocus="handleFocus"
-          @onBlur="handleBlur"
-          @customAlert="customAlert"
-          @customPaste="customPaste"
         />
       </div>
     </div>
@@ -70,6 +64,7 @@ import { getArticle, updateArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
 import { useRoute, useRouter } from "vue-router";
+import { IEditorConfig } from "@wangeditor/editor";
 
 interface Route {
   path: string;
@@ -96,71 +91,69 @@ export default defineComponent({
 
     // 定义router
     const router = useRouter();
-
-    // 编辑器实例，必须用 shallowRef，重要！
+    // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef();
 
-    // 内容 HTML
-    const valueHtml = ref("");
-
     const toolbarConfig = {};
-    const editorConfig = { placeholder: "请输入内容..." };
 
-    // 组件销毁时，也及时销毁编辑器，重要！
+    const editorConfig = {
+      placeholder: "请输入内容...",
+      MENU_CONF: {
+        uploadImage: {
+          // 请求路径
+          server: "api/sysUser/uploadImg",
+          // 后端接收的文件名称
+          fieldName: "file",
+          maxFileSize: 1 * 1024 * 1024, // 1M
+          // 上传的图片类型
+          allowedFileTypes: ["image/*"],
+          // 小于该值就插入 base64 格式（而不上传），默认为 0
+          base64LimitSize: 10 * 1024, // 10MB
+          // 自定义插入返回格式【后端返回的格式】
+          customInsert(res: any, insertFn: any) {
+            if (res.code != 200 && res.success == false) {
+              message.error("上传文件失败，" + res.message);
+              return;
+            }
+            insertFn(res.data.url, res.data.alt, res.data.href);
+          },
+          // 将 meta 拼接到 url 参数中，默认 false
+          metaWithUrl: true,
+          // 单个文件上传成功之后
+          onSuccess(file: any, res: any) {
+            if (res.code == 200 && res.success) {
+              message.success(`${file.name} 上传成功`);
+              return;
+            } else {
+              message.warning(`${file.name} 上传出了点异常`);
+              return;
+            }
+            // console.log(`${file.name} 上传成功`, res)
+            //ElMessage.success(`${file.name} 上传成功`, res)
+          },
+          // 单个文件上传失败
+          onFailed(file: any, res: any) {
+            console.log(res);
+            message.error(`${file.name} 上传失败`);
+          },
+          // 上传错误，或者触发 timeout 超时
+          onError(file: any, err: any, res: any) {
+            console.log(err, res);
+            message.error(`${file.name} 上传出错`);
+          },
+        },
+      },
+    };
+
+    // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
       const editor = editorRef.value;
       if (editor == null) return;
       editor.destroy();
     });
 
-    // 编辑器回调函数
-    const handleCreated = (editor: any) => {
-      console.log("created", editor);
+    const handleCreated = (editor) => {
       editorRef.value = editor; // 记录 editor 实例，重要！
-    };
-    const handleChange = (editor: any) => {
-      console.log("change:", editor.getHtml());
-    };
-    const handleDestroyed = (editor: any) => {
-      console.log("destroyed", editor);
-    };
-    const handleFocus = (editor: any) => {
-      console.log("focus", editor);
-    };
-    const handleBlur = (editor: any) => {
-      console.log("blur", editor);
-    };
-    const customAlert = (info: any, type: any) => {
-      alert(`【自定义提示】${type} - ${info}`);
-    };
-    const customPaste = (editor: any, event: any, callback: any) => {
-      console.log("ClipboardEvent 粘贴事件对象", event);
-
-      // 自定义插入内容
-      editor.insertText("xxx");
-
-      // 返回值（注意，vue 事件的返回值，不能用 return）
-      callback(false); // 返回 false ，阻止默认粘贴行为
-      // callback(true) // 返回 true ，继续默认的粘贴行为
-    };
-
-    const insertText = () => {
-      const editor = editorRef.value;
-      if (editor == null) return;
-
-      editor.insertText("hello world");
-    };
-
-    const printHtml = () => {
-      const editor = editorRef.value;
-      if (editor == null) return;
-      console.log(editor.getHtml());
-    };
-
-    const disable = () => {
-      const editor = editorRef.value;
-      if (editor == null) return;
-      editor.disable();
     };
 
     // 数据类型
@@ -176,7 +169,7 @@ export default defineComponent({
     const articleData = reactive<articleDataType>({
       id: 0,
       title: "",
-      content: valueHtml.value,
+      content: "",
       cate_id: undefined,
       cover_img: undefined,
     });
@@ -246,7 +239,7 @@ export default defineComponent({
         if (res.status === 0) {
           message.success(res.message);
           setTimeout(() => {
-            router.push("articleList");
+            router.push("/articleList");
           }, 1000);
         } else {
           message.success(res.message);
@@ -259,7 +252,6 @@ export default defineComponent({
       routes,
       editorRef,
       mode: "default",
-      valueHtml,
       toolbarConfig,
       editorConfig,
       articleData,
@@ -267,15 +259,6 @@ export default defineComponent({
       isUpload,
       uploadFile,
       handleCreated,
-      handleChange,
-      handleDestroyed,
-      handleFocus,
-      handleBlur,
-      customAlert,
-      customPaste,
-      insertText,
-      printHtml,
-      disable,
       saveArticle,
       selectOk,
       addAvatar,
