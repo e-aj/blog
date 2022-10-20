@@ -63,22 +63,13 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onBeforeUnmount,
-  shallowRef,
-  onMounted,
-  reactive,
-} from "vue";
+import { defineComponent, ref, onBeforeUnmount, shallowRef, reactive } from "vue";
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { getArticle, updateArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "../../stores/store";
-import { storeToRefs } from "pinia";
 
 interface Route {
   path: string;
@@ -87,10 +78,6 @@ interface Route {
 export default defineComponent({
   components: { Editor, Toolbar },
   setup() {
-    // 定义store
-    const store = useStore();
-    const { upArticleId } = storeToRefs(store);
-
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -195,12 +182,7 @@ export default defineComponent({
     });
 
     // 接收路由传的参数
-    console.log(upArticleId.value);
-    upArticleId.value = Number(useRoute().params.id)
-      ? Number(useRoute().params.id)
-      : upArticleId.value;
-    // console.log(upArticleId.value);
-    // articleData.id = upArticleId.value;
+    articleData.id = Number(useRoute().params.id);
 
     // 获取文章信息
     const getArt = () => {
@@ -219,7 +201,6 @@ export default defineComponent({
     getArt();
 
     // 分类信息
-    // const cateOption = reactive([]);
     const cateOption = ref([]);
     getArticleCate().then((res) => {
       cateOption.value = res.data;
@@ -237,6 +218,7 @@ export default defineComponent({
     const addAvatar = () => {
       uploadFile.value.dispatchEvent(new MouseEvent("click"));
     };
+
     // 更新的图片
     // input change 事件
     let formData = new FormData();

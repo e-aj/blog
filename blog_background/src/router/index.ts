@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
         component:()=>import("../views/article/addArticle.vue")
       },
       {
-        path:'/updateArticle',
+        path:'/updateArticle/:id',
         name:'updateArticle',
         component:()=>import("../views/article/updateArticle.vue")
       }

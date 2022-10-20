@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 export const useStore = defineStore({
     // id 必须的  在所有的store唯一
-    id:'user',
+    id:'my_store',
     // state：返回对象的函数
     state:()=>({
       token:'',
@@ -10,13 +10,8 @@ export const useStore = defineStore({
         username:"",
         avatar:""
       },
-      upArticleId:0
     }),
     actions:{
-      // setToken
-      // setToken(token:string) {
-      //   this.token = token
-      // }
     },
     getters:{
     },

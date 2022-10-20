@@ -43,44 +43,8 @@
     cancelText="取消"
     okText="确定添加"
   >
-    <!-- <a-form
-      :model="addArtCateData"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 18 }"
-      autocomplete="off"
-    >
-      <a-form-item label="名称" name="name">
-        <a-input v-model:value="addArtCateData.name" />
-      </a-form-item>
-
-      <a-form-item label="别名" name="alias">
-        <a-input v-model:value="addArtCateData.alias" />
-      </a-form-item>
-    </a-form> -->
   </a-modal>
-  <!-- 修改框 -->
-  <!-- <a-modal
-    v-model:visible="updateVisible"
-    title="修改分类"
-    @ok="updateHandleOk"
-    cancelText="取消"
-    okText="确定修改"
-  >
-    <a-form
-      :model="updateArtCateData"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 18 }"
-      autocomplete="off"
-    >
-      <a-form-item label="名称" name="name">
-        <a-input v-model:value="updateArtCateData.name" />
-      </a-form-item>
 
-      <a-form-item label="别名" name="alias">
-        <a-input v-model:value="updateArtCateData.alias" />
-      </a-form-item>
-    </a-form>
-  </a-modal> -->
   <!-- 删除确认 -->
   <a-modal
     v-model:visible="deleteVisible"
@@ -223,7 +187,8 @@ export default defineComponent({
 
     // 查看修改文章
     const updateArt = (record: any) => {
-      router.push({ name: "updateArticle", params: { id: record.id } });
+      // router.push({ name: "/updateArticle", params: { id: record.id } });
+      router.push(`updateArticle/${record.id}`);
     };
 
     // 切换页码
