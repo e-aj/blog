@@ -9,10 +9,10 @@ const multer = require('multer')
 const path = require('path')
 
 // 创建 multer 的实例对象，通过 dest 属性指定文件的存放路径
-const upload = multer({ dest: path.join(__dirname, '../uploads') })
+const uploadCover = multer({ dest: path.join(__dirname, '../uploads/cover') })
 
 // 发布新文章
-router.post('/addArticle',upload.single('file'),article_handler.addArticle)
+router.post('/addArticle',uploadCover.single('file'),article_handler.addArticle)
 
 // 获取文章
 router.post('/getArticle',article_handler.getArticle)
@@ -24,7 +24,9 @@ router.post('/getArticleList',article_handler.getArticleList)
 router.post('/deleteArticle',article_handler.deleteArticle)
 
 // 修改文章
-router.post('/updateArticle',upload.single('file'),article_handler.updateArticle)
+router.post('/updateArticle',uploadCover.single('file'),article_handler.updateArticle)
+
+
 
 
 // 向外共享路由对象

@@ -11,11 +11,10 @@ exports.addArticle = (req, res) => {
   let nowDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}  ${fullZero(date.getHours())}:${fullZero(date.getMinutes())}:${fullZero(date.getSeconds())}`
   // 手动判断是否上传了文章封面
   // if(!req.file || req.file.filedname !== 'cover_img') return res.send({status:0,message:'请上传封面！'})
-  console.log(req.file);
   const articleInfo = {
     ...req.body,
     // 文章封面在服务器存放路径
-    cover_img: req.file ? path.join("./uploads", req.file.filename) : "",
+    cover_img: req.file ? path.join("./uploads/cover", req.file.filename) : "",
     pub_date: nowDate,
     last_date: nowDate,
     author_id: req.user.id,
@@ -132,7 +131,7 @@ exports.updateArticle = (req, res) => {
   const articleInfo = {
     ...req.body,
     // 文章封面在服务器存放路径
-    cover_img: req.file ? path.join("./uploads", req.file.filename) : "",
+    cover_img: req.file ? path.join("./uploads/cover", req.file.filename) : "",
     last_date: nowDate,
     author_id: req.user.id,
   };
@@ -146,3 +145,4 @@ exports.updateArticle = (req, res) => {
     res.send({ status: 0, message: "更新文章成功！" });
   });
 };
+

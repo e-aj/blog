@@ -64,7 +64,6 @@ import { getArticle, updateArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
 import { useRoute, useRouter } from "vue-router";
-import { IEditorConfig } from "@wangeditor/editor";
 
 interface Route {
   path: string;
@@ -96,17 +95,90 @@ export default defineComponent({
 
     const toolbarConfig = {};
 
+    // 自定义校验链接
+    function customCheckLinkFn(text: string, url: string): string | boolean | undefined {
+      // TS 语法
+      // function customCheckLinkFn(text, url) {                                              // JS 语法
+
+      if (!url) {
+        return;
+      }
+      if (url.indexOf("http") !== 0) {
+        return "链接必须以 http/https 开头";
+      }
+      return true;
+
+      // 返回值有三种选择：
+      // 1. 返回 true ，说明检查通过，编辑器将正常插入链接
+      // 2. 返回一个字符串，说明检查未通过，编辑器会阻止插入。会 alert 出错误信息（即返回的字符串）
+      // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
+    }
+
+    // 自定义转换链接 url
+    function customParseLinkUrl(url: string): string {
+      // TS 语法
+      // function customParseLinkUrl(url) {                // JS 语法
+
+      if (url.indexOf("http") !== 0) {
+        return `http://${url}`;
+      }
+      return url;
+    }
+
+    // 自定义校验视频
+    function customCheckVideoFn(
+      src: string,
+      poster: string
+    ): boolean | string | undefined {
+      // TS 语法
+      // function customCheckVideoFn(src, poster) {                                             // JS 语法
+      if (!src) {
+        return;
+      }
+      if (src.indexOf("http") !== 0) {
+        return "视频地址必须以 http/https 开头";
+      }
+      return true;
+
+      // 返回值有三种选择：
+      // 1. 返回 true ，说明检查通过，编辑器将正常插入视频
+      // 2. 返回一个字符串，说明检查未通过，编辑器会阻止插入。会 alert 出错误信息（即返回的字符串）
+      // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
+    }
+
+    // 自定义转换视频
+    function customParseVideoSrc(src: string): string {
+      // TS 语法
+      // function customParseVideoSrc(src) {               // JS 语法
+      if (src.includes(".bilibili.com")) {
+        // 转换 bilibili url 为 iframe （仅作为示例，不保证代码正确和完整）
+        const arr = location.pathname.split("/");
+        const vid = arr[arr.length - 1];
+        return `<iframe src="//player.bilibili.com/player.html?bvid=${vid}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>`;
+      }
+      return src;
+    }
+
     const editorConfig = {
       placeholder: "请输入内容...",
       MENU_CONF: {
+        insertLink: {
+          checkLink: customCheckLinkFn, // 也支持 async 函数
+          parseLinkUrl: customParseLinkUrl, // 也支持 async 函数
+        },
+        editLink: {
+          checkLink: customCheckLinkFn, // 也支持 async 函数
+          parseLinkUrl: customParseLinkUrl, // 也支持 async 函数
+        },
         uploadImage: {
           // 请求路径
-          server: "api/sysUser/uploadImg",
+          server: "http://192.168.12.62:3333/api/uploadImage",
           // 后端接收的文件名称
           fieldName: "file",
           maxFileSize: 1 * 1024 * 1024, // 1M
           // 上传的图片类型
           allowedFileTypes: ["image/*"],
+
           // 小于该值就插入 base64 格式（而不上传），默认为 0
           base64LimitSize: 10 * 1024, // 10MB
           // 自定义插入返回格式【后端返回的格式】
@@ -115,13 +187,14 @@ export default defineComponent({
               message.error("上传文件失败，" + res.message);
               return;
             }
-            insertFn(res.data.url, res.data.alt, res.data.href);
+            insertFn(res.data.url, res.data.alt);
           },
           // 将 meta 拼接到 url 参数中，默认 false
           metaWithUrl: true,
           // 单个文件上传成功之后
           onSuccess(file: any, res: any) {
-            if (res.code == 200 && res.success) {
+            console.log(res);
+            if (res.error === 0) {
               message.success(`${file.name} 上传成功`);
               return;
             } else {
@@ -139,8 +212,20 @@ export default defineComponent({
           // 上传错误，或者触发 timeout 超时
           onError(file: any, err: any, res: any) {
             console.log(err, res);
-            message.error(`${file.name} 上传出错`);
+            message.error(`${file.name} 上传超时`);
           },
+        },
+        insertVideo: {
+          onInsertedVideo(videoNode: VideoElement | null) {
+            // TS 语法
+            // onInsertedVideo(videoNode) {                    // JS 语法
+            if (videoNode == null) return;
+
+            const { src } = videoNode;
+            console.log("inserted video", src);
+          },
+          checkVideo: customCheckVideoFn, // 也支持 async 函数
+          parseVideoSrc: customParseVideoSrc, // 也支持 async 函数
         },
       },
     };

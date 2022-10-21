@@ -41,23 +41,17 @@
       </a-form>
       <div style="border: 1px solid #ccc; margin-top: 10px">
         <Toolbar
+          style="border-bottom: 1px solid #ccc"
           :editor="editorRef"
           :defaultConfig="toolbarConfig"
           :mode="mode"
-          style="border-bottom: 1px solid #ccc"
         />
         <Editor
+          style="height: 500px; overflow-y: hidden"
+          v-model="articleData.content"
           :defaultConfig="editorConfig"
           :mode="mode"
-          v-model="articleData.content"
-          style="height: 400px; overflow-y: hidden"
           @onCreated="handleCreated"
-          @onChange="handleChange"
-          @onDestroyed="handleDestroyed"
-          @onFocus="handleFocus"
-          @onBlur="handleBlur"
-          @customAlert="customAlert"
-          @customPaste="customPaste"
         />
       </div>
     </div>
@@ -81,6 +75,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { addArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
+import { useRouter } from "vue-router";
 interface Route {
   path: string;
   breadcrumbName: string;
@@ -88,6 +83,8 @@ interface Route {
 export default defineComponent({
   components: { Editor, Toolbar },
   setup() {
+    const router = useRouter();
+
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -104,79 +101,155 @@ export default defineComponent({
       },
     ]);
 
-    // 编辑器实例，必须用 shallowRef，重要！
+    // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef();
 
-    // 内容 HTML
-    const valueHtml = ref("");
-
-    // 模拟 ajax 异步获取内容
-    onMounted(() => {
-      setTimeout(() => {
-        articleData.content = "";
-      }, 1500);
-    });
-
     const toolbarConfig = {};
-    const editorConfig = { placeholder: "请输入内容..." };
 
-    // 组件销毁时，也及时销毁编辑器，重要！
+    // 自定义校验链接
+    function customCheckLinkFn(text: string, url: string): string | boolean | undefined {
+      // TS 语法
+      // function customCheckLinkFn(text, url) {                                              // JS 语法
+
+      if (!url) {
+        return;
+      }
+      if (url.indexOf("http") !== 0) {
+        return "链接必须以 http/https 开头";
+      }
+      return true;
+
+      // 返回值有三种选择：
+      // 1. 返回 true ，说明检查通过，编辑器将正常插入链接
+      // 2. 返回一个字符串，说明检查未通过，编辑器会阻止插入。会 alert 出错误信息（即返回的字符串）
+      // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
+    }
+
+    // 自定义转换链接 url
+    function customParseLinkUrl(url: string): string {
+      // TS 语法
+      // function customParseLinkUrl(url) {                // JS 语法
+
+      if (url.indexOf("http") !== 0) {
+        return `http://${url}`;
+      }
+      return url;
+    }
+
+    // 自定义校验视频
+    function customCheckVideoFn(
+      src: string,
+      poster: string
+    ): boolean | string | undefined {
+      // TS 语法
+      // function customCheckVideoFn(src, poster) {                                             // JS 语法
+      if (!src) {
+        return;
+      }
+      if (src.indexOf("http") !== 0) {
+        return "视频地址必须以 http/https 开头";
+      }
+      return true;
+
+      // 返回值有三种选择：
+      // 1. 返回 true ，说明检查通过，编辑器将正常插入视频
+      // 2. 返回一个字符串，说明检查未通过，编辑器会阻止插入。会 alert 出错误信息（即返回的字符串）
+      // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
+    }
+
+    // 自定义转换视频
+    function customParseVideoSrc(src: string): string {
+      // TS 语法
+      // function customParseVideoSrc(src) {               // JS 语法
+      if (src.includes(".bilibili.com")) {
+        // 转换 bilibili url 为 iframe （仅作为示例，不保证代码正确和完整）
+        const arr = location.pathname.split("/");
+        const vid = arr[arr.length - 1];
+        return `<iframe src="//player.bilibili.com/player.html?bvid=${vid}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>`;
+      }
+      return src;
+    }
+
+    const editorConfig = {
+      placeholder: "请输入内容...",
+      MENU_CONF: {
+        insertLink: {
+          checkLink: customCheckLinkFn, // 也支持 async 函数
+          parseLinkUrl: customParseLinkUrl, // 也支持 async 函数
+        },
+        editLink: {
+          checkLink: customCheckLinkFn, // 也支持 async 函数
+          parseLinkUrl: customParseLinkUrl, // 也支持 async 函数
+        },
+        uploadImage: {
+          // 请求路径
+          server: "http://192.168.12.62:3333/api/uploadImage",
+          // 后端接收的文件名称
+          fieldName: "file",
+          maxFileSize: 1 * 1024 * 1024, // 1M
+          // 上传的图片类型
+          allowedFileTypes: ["image/*"],
+
+          // 小于该值就插入 base64 格式（而不上传），默认为 0
+          base64LimitSize: 10 * 1024, // 10MB
+          // 自定义插入返回格式【后端返回的格式】
+          customInsert(res: any, insertFn: any) {
+            if (res.code != 200 && res.success == false) {
+              message.error("上传文件失败，" + res.message);
+              return;
+            }
+            insertFn(res.data.url, res.data.alt);
+          },
+          // 将 meta 拼接到 url 参数中，默认 false
+          metaWithUrl: true,
+          // 单个文件上传成功之后
+          onSuccess(file: any, res: any) {
+            if (res.error === 0) {
+              message.success(`${file.name} 上传成功`);
+              return;
+            } else {
+              message.warning(`${file.name} 上传出了点异常`);
+              return;
+            }
+            // console.log(`${file.name} 上传成功`, res)
+            //ElMessage.success(`${file.name} 上传成功`, res)
+          },
+          // 单个文件上传失败
+          onFailed(file: any, res: any) {
+            console.log(res);
+            message.error(`${file.name} 上传失败`);
+          },
+          // 上传错误，或者触发 timeout 超时
+          onError(file: any, err: any, res: any) {
+            console.log(err, res);
+            message.error(`${file.name} 上传出错`);
+          },
+        },
+        insertVideo: {
+          onInsertedVideo(videoNode: VideoElement | null) {
+            // TS 语法
+            // onInsertedVideo(videoNode) {                    // JS 语法
+            if (videoNode == null) return;
+
+            const { src } = videoNode;
+            console.log("inserted video", src);
+          },
+          checkVideo: customCheckVideoFn, // 也支持 async 函数
+          parseVideoSrc: customParseVideoSrc, // 也支持 async 函数
+        },
+      },
+    };
+
+    // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
       const editor = editorRef.value;
       if (editor == null) return;
       editor.destroy();
     });
 
-    // 编辑器回调函数
-    const handleCreated = (editor: any) => {
-      console.log("created", editor);
+    const handleCreated = (editor) => {
       editorRef.value = editor; // 记录 editor 实例，重要！
     };
-    const handleChange = (editor: any) => {
-      console.log("change:", editor.getHtml());
-    };
-    const handleDestroyed = (editor: any) => {
-      console.log("destroyed", editor);
-    };
-    const handleFocus = (editor: any) => {
-      console.log("focus", editor);
-    };
-    const handleBlur = (editor: any) => {
-      console.log("blur", editor);
-    };
-    const customAlert = (info: any, type: any) => {
-      alert(`【自定义提示】${type} - ${info}`);
-    };
-    const customPaste = (editor: any, event: any, callback: any) => {
-      console.log("ClipboardEvent 粘贴事件对象", event);
-
-      // 自定义插入内容
-      editor.insertText("xxx");
-
-      // 返回值（注意，vue 事件的返回值，不能用 return）
-      callback(false); // 返回 false ，阻止默认粘贴行为
-      // callback(true) // 返回 true ，继续默认的粘贴行为
-    };
-
-    const insertText = () => {
-      const editor = editorRef.value;
-      if (editor == null) return;
-
-      editor.insertText("hello world");
-    };
-
-    const printHtml = () => {
-      const editor = editorRef.value;
-      if (editor == null) return;
-      console.log(editor.getHtml());
-    };
-
-    const disable = () => {
-      const editor = editorRef.value;
-      if (editor == null) return;
-      editor.disable();
-    };
-
     // 数据类型
     interface articleDataType {
       title: string;
@@ -187,7 +260,7 @@ export default defineComponent({
     // 文章信息
     const articleData = reactive<articleDataType>({
       title: "",
-      content: valueHtml.value,
+      content: "",
       cate_id: undefined,
     });
 
@@ -228,7 +301,11 @@ export default defineComponent({
       formData.append("content", String(articleData.content));
       addArticle(formData).then((res) => {
         if (res.status === 0) {
+          setTimeout(() => {
+            router.push("articleList");
+          }, 1000);
           message.success(res.message);
+
           formData = new FormData();
         } else {
           message.success(res.message);
@@ -241,7 +318,6 @@ export default defineComponent({
       routes,
       editorRef,
       mode: "default",
-      valueHtml,
       toolbarConfig,
       editorConfig,
       articleData,
@@ -250,15 +326,6 @@ export default defineComponent({
       addImg,
       file,
       handleCreated,
-      handleChange,
-      handleDestroyed,
-      handleFocus,
-      handleBlur,
-      customAlert,
-      customPaste,
-      insertText,
-      printHtml,
-      disable,
       saveArticle,
       selectOk,
       addAvatar,

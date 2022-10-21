@@ -1,5 +1,6 @@
 // 处理函数
-
+const path = require("path");
+const fs = require("fs");
 // 导入数据库
 const db = require('../db/index')
 
@@ -96,3 +97,43 @@ exports.login = (req,res)=>{
 
     })
 }
+
+// 上传文章图片
+exports.uploadImage = (req,res)=>{
+    const readFileFun = (i) => {
+        return new Promise((resolve, reject) => {
+          fs.readFile(i, (err, data) => {
+            if (err) {
+              console.log(err);
+            }
+            var base64Img = `data:image/jpeg;base64,${data.toString("base64")}`;
+            resolve(base64Img);
+          });
+        });
+      };
+
+
+
+      readFileFun(req.file.path)
+        .then((base64Img) => {
+            res.send({
+      
+                // errno 即错误代码，0 表示没有错误。
+                //       如果有错误，errno != 0，可通过下文中的监听函数 fail 拿到该错误码进行自定义处理
+                "error": 0,
+                // data 是一个数组，返回若干图片的线上地址
+                "data": {
+                    "url": base64Img, // 图片 src ，必须
+                    "alt": req.file.filedname, // 图片描述文字，非必须
+                    "href": "zzz" // 图片的链接，非必须
+                }
+            
+            })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+   
+  }
+
+

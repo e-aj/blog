@@ -160,6 +160,7 @@ export default defineComponent({
           total.value = res.total;
           articleList.value = res.data;
         } else {
+          articleList.value = res.data;
           message.warning(res.message);
         }
       });
@@ -178,7 +179,9 @@ export default defineComponent({
         if (res.status === 0) {
           message.success(res.message);
           deleteVisible.value = false;
-          getArtList();
+          setTimeout(() => {
+            getArtList();
+          }, 1000);
         } else {
           message.warn(res.message);
         }
