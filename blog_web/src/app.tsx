@@ -1,7 +1,7 @@
 // App.js
 
 // 导入 Route, Routes 组件
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./views/Home/home";
 import Index from './views/Index/Index'
 import About from "./views/About/About";
