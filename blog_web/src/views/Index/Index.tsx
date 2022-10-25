@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './Index.less'
 
 import {  Carousel } from "antd";
 import avatar1 from "../../assets/avatar1.png";

@@ -29,10 +29,10 @@ function Home() {
         <div className="content">
           <Outlet />
         </div>
-      </div>
-      <div className="foot">
+        <div className="foot">
         <span>333</span>
         <span>23333</span>
+      </div>
       </div>
     </div>
   );
