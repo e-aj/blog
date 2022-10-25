@@ -51,6 +51,14 @@ app.use('/my',artcate)
 const article = require('./router/article')
 app.use('/my',article)
 
+// 作品
+const works = require('./router/works')
+app.use('/my',works)
+
+// webShow
+const webShow = require('./router/user')
+app.use('/api',webShow)
+
 
 // 启动web服务器
 app.listen(3333,()=>{
