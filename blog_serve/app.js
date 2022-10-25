@@ -38,6 +38,9 @@ app.use((err,req,res,next)=>{
 // 导入并注册用户路由模块
 const userRouter = require('./router/user')
 app.use('/api',userRouter)
+// webShow
+const webShow = require('./router/webShow')
+app.use('/api',webShow)
 
 // 信息模块
 const userinfoRouter = require('./router/userinfo')
@@ -55,9 +58,7 @@ app.use('/my',article)
 const works = require('./router/works')
 app.use('/my',works)
 
-// webShow
-const webShow = require('./router/user')
-app.use('/api',webShow)
+
 
 
 // 启动web服务器
