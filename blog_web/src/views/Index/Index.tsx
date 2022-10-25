@@ -14,6 +14,10 @@ function Index() {
     }, 2000);
   };
   checkAvatar();
+
+  const onChange = (currentSlide: number) => {
+    console.log(currentSlide);
+  };
   return (
     <div className="index">
       <div className="top">
@@ -40,6 +44,13 @@ function Index() {
             <div className="app">222</div>
           </div>
         </div>
+      </div>
+      <div className="content">
+      <Carousel afterChange={onChange} autoplay>
+      <div>
+        <h3 >1</h3>
+      </div>
+    </Carousel>
       </div>
     </div>
   );

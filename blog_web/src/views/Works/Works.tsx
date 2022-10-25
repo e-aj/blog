@@ -9,9 +9,11 @@ function Works() {
                 <span> / </span>
             <span>Works Collection</span>
             </div>
+            <div className="content">
+
+            </div>
         </div>
     )
-    
 }
 
 export default Works;

@@ -20,7 +20,8 @@ blog_background
 		9.删除文章	delete_article
 
 blog_web
-	1.查看文章
+	1.查看文章列表（详情等）	get_articleDetal
+	2.查看作品列表		get_works
 
 
 
@@ -39,9 +40,23 @@ blog_web
 	blog_article
 		id
 		title
-		tetails
+		content
+		cover_img
+		pub_date
+		last_date
+		cate_id
 		is_delete(0为未删除，1为删除）
-		hits
+		author_id
+	bolg_works
+		id
+		name
+		link
+		intro
+		pub_date
+		last_dete
+		author_id
+		is_delete
+		
 		
 
 		
