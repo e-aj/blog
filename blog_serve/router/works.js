@@ -18,6 +18,6 @@ router.post('/deleteWorks',works_handler.deleteWorks)
 router.post('/updateWorks',works_handler.updateWorks)
 
 // 获取作品列表
-router.post('getWorksList',works_handler.getWorksList)
+router.post('/getWorksList',works_handler.getWorksList)
 
 module.exports = router

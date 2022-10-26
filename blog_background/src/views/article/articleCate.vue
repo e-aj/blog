@@ -107,12 +107,10 @@ export default defineComponent({
       {
         title: "Id",
         dataIndex: "id",
-        width: 150,
       },
       {
         title: "名称",
         dataIndex: "name",
-        width: 150,
       },
       {
         title: "别名",

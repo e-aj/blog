@@ -24,6 +24,13 @@
           <a-menu-item key="articleCateList">分类列表</a-menu-item>
           <a-menu-item key="articleList">文章列表</a-menu-item>
         </a-sub-menu>
+        <a-sub-menu key="sub3">
+          <template #icon>
+            <MailOutlined />
+          </template>
+          <template #title>作品管理</template>
+          <a-menu-item key="worksList">作品列表</a-menu-item>
+        </a-sub-menu>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -40,8 +47,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-// import { storeToRefs } from "pinia";
-// import { useStore } from "../../stores/user";
 import Head from "./head.vue";
 export default defineComponent({
   components: {
@@ -50,10 +55,6 @@ export default defineComponent({
   setup() {
     // 定义router
     const router = useRouter();
-
-    // 定义状态管理器
-    // const store = useStore();
-    // const storeData = storeToRefs(store);
 
     // 跳转首页
     const toIndex = () => {

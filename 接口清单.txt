@@ -52,6 +52,7 @@ blog_web
 		name
 		link
 		intro
+		cover_img
 		pub_date
 		last_dete
 		author_id

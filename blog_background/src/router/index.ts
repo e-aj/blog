@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         path:'/updateArticle/:id',
         name:'updateArticle',
         component:()=>import("../views/article/updateArticle.vue")
+      },
+      {
+        path:"/worksList",
+        name:'works',
+        component:()=>import('../views/works/worksList.vue')
       }
     ],
   },
