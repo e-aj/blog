@@ -1,5 +1,6 @@
 <template>
   <div class="works">
+    <!-- 面包屑 -->
     <a-breadcrumb :routes="routes">
       <template #itemRender="{ route, paths }">
         <span v-if="routes.indexOf(route) === routes.length - 1">
@@ -10,20 +11,20 @@
         </router-link>
       </template>
     </a-breadcrumb>
-
+    <!-- 添加按钮 -->
     <a-button type="primary" size="middle" shape="round" @click="addworks">
       添加作品
     </a-button>
-
+    <!-- 列表表格 -->
     <a-table :columns="columns" :pagination="false" :data-source="worksList">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'edit'">
-          <a-tag color="red" @click="deleteArt(record)">删除</a-tag>
-          <a-tag color="green" @click="updateArt(record)">修改</a-tag>
+          <a-tag color="red" @click="deleteBtn(record)">删除</a-tag>
+          <a-tag color="green" @click="updateBtn(record)">修改</a-tag>
         </template>
       </template>
     </a-table>
-
+    <!-- 分页 -->
     <a-config-provider :locale="locale">
       <a-pagination
         v-model:current="currentPage"
@@ -34,7 +35,6 @@
       />
     </a-config-provider>
   </div>
-
   <!-- 添加框 -->
   <a-modal
     v-model:visible="addVisible"
@@ -44,8 +44,7 @@
     okText="确定添加"
   >
   </a-modal>
-
-  <!-- 删除确认 -->
+  <!-- 删除确认框 -->
   <a-modal
     v-model:visible="deleteVisible"
     title="删除分类"
@@ -55,11 +54,41 @@
   >
     <p>确认删除此作品？</p>
   </a-modal>
+  <!-- 修改框 -->
+  <a-modal
+    v-model:visible="updateVisible"
+    title="修改分类"
+    @ok="updateHandleOk"
+    cancelText="取消"
+    okText="确定修改"
+  >
+    <a-form
+      :model="worksData"
+      :label-col="{ span: 6 }"
+      :wrapper-col="{ span: 18 }"
+      autocomplete="off"
+    >
+      <a-form-item label="ID" name="id">
+        <a-input v-model:value="worksData.id" />
+      </a-form-item>
+
+      <a-form-item label="作品名称" name="name">
+        <a-input v-model:value="worksData.name" />
+      </a-form-item>
+      <a-form-item label="作品连接" name="link">
+        <a-input v-model:value="worksData.link" />
+      </a-form-item>
+      <a-form-item label="介绍" name="intro">
+        <a-input v-model:value="worksData.intro" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
+
 <script lang="ts">
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { message } from "ant-design-vue";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 import { getWorksList, deleteWorks } from "../../api/works";
 import { useRouter } from "vue-router";
 interface Route {
@@ -70,6 +99,7 @@ export default defineComponent({
   setup() {
     // 定义路由
     const router = useRouter();
+
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -116,18 +146,29 @@ export default defineComponent({
       },
     ];
 
+    // 信息对象类型
     interface worksListType {
       id?: number;
       name?: string;
       cover_img?: File;
+      link?: string;
       pub_date?: string;
       last_date?: string;
       intro?: string;
       is_delete?: number;
       author_id?: number;
     }
+
     // 定义作品列表
     const worksList = ref<worksListType[]>([]);
+
+    // 对象信息
+    const worksData = reactive<worksListType>({
+      id: undefined,
+      name: "",
+      link: "",
+      intro: "",
+    });
 
     // 定义模态框数据
     const addVisible = ref<boolean>(false);
@@ -136,12 +177,10 @@ export default defineComponent({
 
     const addHandleOk = ref<boolean>(false);
     // const updateHandleOk = ref<boolean>(false);
-    // const deleteHandleOk = ref<boolean>(false);
 
     // 添加作品
     const addworks = () => {
-      router.push("/addworks");
-      // addVisible.value = true;
+      addVisible.value = true;
     };
 
     // 定义分页
@@ -170,13 +209,13 @@ export default defineComponent({
     // 删除作品
     const deleteId = ref<number>();
     // 删除框显示
-    const deleteArt = (record: any) => {
+    const deleteBtn = (record: any) => {
       deleteVisible.value = true;
       deleteId.value = record.id;
     };
     // 删除确定
     const deleteHandleOk = () => {
-      deleteworks(deleteId.value).then((res) => {
+      deleteWorks(deleteId.value).then((res) => {
         if (res.status === 0) {
           message.success(res.message);
           deleteVisible.value = false;
@@ -190,9 +229,14 @@ export default defineComponent({
     };
 
     // 查看修改作品
-    const updateArt = (record: any) => {
+    const updateBtn = (record: any) => {
       // router.push({ name: "/updateworks", params: { id: record.id } });
       router.push(`updateworks/${record.id}`);
+    };
+
+    // 确认修改
+    const updateHandleOk = () => {
+      console.log(111);
     };
 
     // 切换页码
@@ -217,10 +261,13 @@ export default defineComponent({
       addVisible,
       addHandleOk,
       deleteVisible,
+      worksData,
+      updateVisible,
+      updateHandleOk,
       addworks,
       changePage,
-      deleteArt,
-      updateArt,
+      deleteBtn,
+      updateBtn,
       deleteHandleOk,
     };
   },

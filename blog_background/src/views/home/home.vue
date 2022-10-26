@@ -2,13 +2,7 @@
   <a-layout>
     <a-layout-sider>
       <div class="title" @click="toIndex">管理系统</div>
-      <a-menu
-        v-model:openKeys="openKeys"
-        v-model:selectedKeys="selectedKeys"
-        mode="inline"
-        theme="llight"
-        @select="menuSelect"
-      >
+      <a-menu mode="inline" theme="llight" @select="menuSelect">
         <a-sub-menu key="sub1">
           <template #icon>
             <MailOutlined />

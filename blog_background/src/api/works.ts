@@ -1,39 +1,44 @@
 import instance from './http'
 
 // 获取作品列表
-export function getWorksList(date:any){
+export function getWorksList(data:any){
     return instance({
         url:'my/getWorksList',
-        data:date,
-        method:"post"
+        method:'post',
+        data,
     })
 }
 
 // 添加作品
-export function addWorks(date:any){
+export function addWorks(formData:any){
     return instance({
         url:'my/addWorks',
-        data:date,
-        method:"post"
+        method:'post',
+        data:formData,
+        headers:{
+            'Content-Type': 'multipart/form-data',
+        },
     })
 }
+
 
 // 删除作品
-export function deleteWorks(date:any){
+export function deleteWorks(id:number){
     return instance({
         url:'my/deleteWorks',
-        data:date,
-        method:"post"
+        method:'post',
+        data:{"id":id}
     })
 }
 
-
-// 添加作品
-export function updateWorks(date:any){
+// 修改作品
+export function updateWorks(formData:any){
     return instance({
         url:'my/updateWorks',
-        data:date,
-        method:"post"
+        method:'post',
+        data:formData,
+        headers:{
+            "Content-Type":"multipart/form-data"
+        }
     })
 }
-
