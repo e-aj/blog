@@ -230,7 +230,6 @@ export default defineComponent({
     };
 
     // 上传封面
-    // const isUpload = ref<boolean>(false);
     //input file dom
     const uploadFile = ref(null);
     const addAvatar = () => {
@@ -249,7 +248,6 @@ export default defineComponent({
         updateWorksData.cover_img = i.target.result;
         addWorksData.cover_img = i.target.result;
       };
-      isUpload.value = true;
     };
 
     // 添加作品信息
