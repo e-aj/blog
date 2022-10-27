@@ -10,11 +10,11 @@ const fullZero = (num) => {
 exports.addWorks = (req, res) => {
   const date = new Date()
   let nowDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}  ${fullZero(date.getHours())}:${fullZero(date.getMinutes())}:${fullZero(date.getSeconds())}`
-  // 手动判断是否上传了文章封面
+  // 手动判断是否上传了作品封面
   // if(!req.file || req.file.filedname !== 'cover_img') return res.send({status:0,message:'请上传封面！'})
   const worksInfo = {
     ...req.body,
-    // 文章封面在服务器存放路径
+    // 作品封面在服务器存放路径
     cover_img: req.file ? path.join("./uploads/works", req.file.filename) : "",
     pub_date: nowDate,
     last_date: nowDate,
@@ -53,11 +53,12 @@ exports.deleteWorks = (req, res) => {
 exports.updateWorks = (req, res) => {
   const date = new Date()
   let nowDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}  ${fullZero(date.getHours())}:${fullZero(date.getMinutes())}:${fullZero(date.getSeconds())}`
-  // 手动判断是否上传了文章封面
+  // 手动判断是否上传了作品封面
   // if(!req.file || req.file.filedname !== 'cover_img') return res.send({status:0,message:'请上传封面！'})
   const worksInfo = {
     ...req.body,
-    // 文章封面在服务器存放路径
+    // 作品封面在服务器存放路径
+    // cover_img: req.file ? path.join("./uploads/works", req.file.originalname) : "",
     cover_img: req.file ? path.join("./uploads/works", req.file.filename) : "",
     last_date: nowDate,
     author_id: req.user.id,
@@ -100,3 +101,50 @@ exports.getWorksList = (req, res) => {
     });
   })
 }
+
+
+// 获取作品
+exports.getWorksDetail = (req, res) => {
+  const sql = "select * from blog_works where id=?";
+  db.query(sql, req.body.id, (err, result) => {
+    if (err) return res.send({ status: 1, message: err });
+
+    if (result.length === 0)
+      return res.send({ status: 1, message: "获取作品失败！" });
+
+    let worksDetail = result[0];
+
+    const readFileFun = () => {
+      return new Promise((resolve, reject) => {
+        fs.readFile(result[0].cover_img, (err, data) => {
+          if (err) {
+            console.log(err);
+          }
+          var base64Img = `data:image/jpeg;base64,${data.toString("base64")}`;
+          resolve(base64Img);
+        });
+      });
+    };
+
+    if (worksDetail.cover_img) {
+      readFileFun()
+        .then((base64Img) => {
+          worksDetail.cover_img = base64Img;
+          res.send({
+            status: 0,
+            message: "获取作品成功！",
+            data: worksDetail,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      res.send({
+        status: 0,
+        message: "获取作品成功！",
+        data: worksDetail,
+      });
+    }
+  });
+};

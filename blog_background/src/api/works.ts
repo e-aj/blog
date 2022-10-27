@@ -23,7 +23,7 @@ export function addWorks(formData:any){
 
 
 // 删除作品
-export function deleteWorks(id:number){
+export function deleteWorks(id:any){
     return instance({
         url:'my/deleteWorks',
         method:'post',
@@ -40,5 +40,17 @@ export function updateWorks(formData:any){
         headers:{
             "Content-Type":"multipart/form-data"
         }
+    })
+}
+
+
+
+
+// 获取作品详情
+export function getWorksDetail(id:any){
+    return instance({
+        url:'my/getWorksDetail',
+        method:'post',
+        data:{"id":id}
     })
 }

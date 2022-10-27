@@ -43,6 +43,31 @@
     cancelText="取消"
     okText="确定添加"
   >
+    <a-form
+      :model="addWorksData"
+      :label-col="{ span: 6 }"
+      :wrapper-col="{ span: 18 }"
+      autocomplete="off"
+    >
+      <a-form-item label="作品名称" name="name">
+        <a-input v-model:value="addWorksData.name" />
+      </a-form-item>
+      <a-form-item has-feedback label="作品图片" name="cover_img">
+        <div class="uploadImg" @click="addAvatar">
+          <img :src="addWorksData.cover_img" alt="" v-show="addWorksData.cover_img" />
+          <div class="add" v-show="!addWorksData.cover_img">
+            +
+            <input type="file" ref="uploadFile" @change="addChange" />
+          </div>
+        </div>
+      </a-form-item>
+      <a-form-item label="作品连接" name="link">
+        <a-input v-model:value="addWorksData.link" />
+      </a-form-item>
+      <a-form-item label="介绍" name="intro">
+        <a-input v-model:value="addWorksData.intro" />
+      </a-form-item>
+    </a-form>
   </a-modal>
   <!-- 删除确认框 -->
   <a-modal
@@ -63,23 +88,35 @@
     okText="确定修改"
   >
     <a-form
-      :model="worksData"
+      :model="updateWorksData"
       :label-col="{ span: 6 }"
       :wrapper-col="{ span: 18 }"
       autocomplete="off"
     >
       <a-form-item label="ID" name="id">
-        <a-input v-model:value="worksData.id" />
+        <a-input v-model:value="updateWorksData.id" disabled />
       </a-form-item>
-
       <a-form-item label="作品名称" name="name">
-        <a-input v-model:value="worksData.name" />
+        <a-input v-model:value="updateWorksData.name" />
+      </a-form-item>
+      <a-form-item has-feedback label="作品图片" name="cover_img">
+        <div class="uploadImg" @click="addAvatar">
+          <img
+            :src="updateWorksData.cover_img"
+            alt=""
+            v-show="updateWorksData.cover_img"
+          />
+          <div class="add" v-show="!updateWorksData.cover_img">
+            +
+            <input type="file" ref="uploadFile" @change="addChange" />
+          </div>
+        </div>
       </a-form-item>
       <a-form-item label="作品连接" name="link">
-        <a-input v-model:value="worksData.link" />
+        <a-input v-model:value="updateWorksData.link" />
       </a-form-item>
       <a-form-item label="介绍" name="intro">
-        <a-input v-model:value="worksData.intro" />
+        <a-input v-model:value="updateWorksData.intro" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -89,17 +126,19 @@
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { message } from "ant-design-vue";
 import { defineComponent, onMounted, reactive, ref } from "vue";
-import { getWorksList, deleteWorks } from "../../api/works";
-import { useRouter } from "vue-router";
+import {
+  getWorksList,
+  deleteWorks,
+  updateWorks,
+  addWorks,
+  getWorksDetail,
+} from "../../api/works";
 interface Route {
   path: string;
   breadcrumbName: string;
 }
 export default defineComponent({
   setup() {
-    // 定义路由
-    const router = useRouter();
-
     // 定义面包屑
     const routes = ref<Route[]>([
       {
@@ -162,26 +201,10 @@ export default defineComponent({
     // 定义作品列表
     const worksList = ref<worksListType[]>([]);
 
-    // 对象信息
-    const worksData = reactive<worksListType>({
-      id: undefined,
-      name: "",
-      link: "",
-      intro: "",
-    });
-
     // 定义模态框数据
     const addVisible = ref<boolean>(false);
     const updateVisible = ref<boolean>(false);
     const deleteVisible = ref<boolean>(false);
-
-    const addHandleOk = ref<boolean>(false);
-    // const updateHandleOk = ref<boolean>(false);
-
-    // 添加作品
-    const addworks = () => {
-      addVisible.value = true;
-    };
 
     // 定义分页
     const currentPage = ref<number>(1);
@@ -206,6 +229,95 @@ export default defineComponent({
       });
     };
 
+    // 上传封面
+    // const isUpload = ref<boolean>(false);
+    //input file dom
+    const uploadFile = ref(null);
+    const addAvatar = () => {
+      uploadFile.value.dispatchEvent(new MouseEvent("click"));
+    };
+
+    // 更新的图片
+    // input change 事件
+    let formData = new FormData();
+    const addChange = (e: any) => {
+      let img = e.target.files[0]; //获取到上传文件的对象
+      formData.append("file", img);
+      var reader = new FileReader();
+      reader.readAsDataURL(img); //参数为上传的文件对象 传值进去就会触发以下onload方法
+      reader.onload = (i: any) => {
+        updateWorksData.cover_img = i.target.result;
+        addWorksData.cover_img = i.target.result;
+      };
+      isUpload.value = true;
+    };
+
+    // 添加作品信息
+    const addWorksData = reactive<worksListType>({});
+
+    // 添加作品
+    const addworks = () => {
+      addVisible.value = true;
+    };
+
+    const addHandleOk = () => {
+      formData.append("name", String(addWorksData.name));
+      formData.append("link", String(addWorksData.link));
+      formData.append("intro", String(addWorksData.intro));
+      addWorks(formData).then((res) => {
+        if (res.status === 0) {
+          message.success(res.message);
+          setTimeout(() => {
+            addVisible.value = false;
+            getWorkList();
+          }, 2000);
+        } else {
+          message.warn(res.message);
+        }
+      });
+    };
+
+    // 修改对象信息
+    const updateWorksData = reactive<worksListType>({});
+
+    // 修改数据对象
+    // 查看修改作品
+    const updateBtn = (record: any) => {
+      updateVisible.value = true;
+      updateWorksData.id = record.id;
+      getWorksDetail(record.id).then((res) => {
+        if (res.status === 0) {
+          updateWorksData.name = res.data.name;
+          updateWorksData.link = res.data.link;
+          updateWorksData.cover_img = res.data.cover_img;
+          updateWorksData.intro = res.data.intro;
+        } else {
+          message.warn(res.message);
+        }
+      });
+      console.log(updateWorksData.cover_img);
+    };
+
+    // 确认修改
+    const updateHandleOk = () => {
+      formData.append("id", String(updateWorksData.id));
+      formData.append("name", String(updateWorksData.name));
+      formData.append("link", String(updateWorksData.link));
+      formData.append("intro", String(updateWorksData.intro));
+      updateWorks(formData).then((res) => {
+        formData = new FormData();
+        if (res.status === 0) {
+          message.success(res.message);
+          setTimeout(() => {
+            updateVisible.value = false;
+            getWorkList();
+          }, 2000);
+        } else {
+          message.warning(res.message);
+        }
+      });
+    };
+
     // 删除作品
     const deleteId = ref<number>();
     // 删除框显示
@@ -218,25 +330,14 @@ export default defineComponent({
       deleteWorks(deleteId.value).then((res) => {
         if (res.status === 0) {
           message.success(res.message);
-          deleteVisible.value = false;
           setTimeout(() => {
+            deleteVisible.value = false;
             getWorkList();
           }, 1000);
         } else {
           message.warn(res.message);
         }
       });
-    };
-
-    // 查看修改作品
-    const updateBtn = (record: any) => {
-      // router.push({ name: "/updateworks", params: { id: record.id } });
-      router.push(`updateworks/${record.id}`);
-    };
-
-    // 确认修改
-    const updateHandleOk = () => {
-      console.log(111);
     };
 
     // 切换页码
@@ -261,14 +362,18 @@ export default defineComponent({
       addVisible,
       addHandleOk,
       deleteVisible,
-      worksData,
+      addWorksData,
       updateVisible,
+      updateWorksData,
       updateHandleOk,
       addworks,
       changePage,
       deleteBtn,
       updateBtn,
       deleteHandleOk,
+      addAvatar,
+      addChange,
+      uploadFile,
     };
   },
 });
@@ -292,6 +397,32 @@ export default defineComponent({
     position: absolute;
     bottom: 0;
     width: 100%;
+  }
+}
+.uploadImg {
+  border: 1px solid red;
+  width: 150px;
+  height: 150px;
+  margin: 0 10px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  img {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+  }
+  .add {
+    line-height: 150px;
+    text-align: center;
+    font-size: 40px;
+    color: #ccc;
+    cursor: pointer;
+    position: relative;
+
+    input {
+      display: none;
+    }
   }
 }
 </style>

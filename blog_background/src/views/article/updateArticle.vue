@@ -15,7 +15,7 @@
         <a-form-item has-feedback label="标题" name="title">
           <a-input v-model:value="articleData.title" type="text" />
         </a-form-item>
-        <a-form-item has-feedback label="封面" name="title">
+        <a-form-item has-feedback label="封面" name="cover_img">
           <div class="uploadImg" @click="addAvatar">
             <img :src="articleData.cover_img" alt="" v-show="isUpload" />
             <div class="add" v-show="!isUpload">

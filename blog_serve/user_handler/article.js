@@ -126,6 +126,7 @@ exports.deleteArticle = (req, res) => {
 
 // 修改文章
 exports.updateArticle = (req, res) => {
+  console.log(req.file)
   const date = new Date()
   let nowDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}  ${fullZero(date.getHours())}:${fullZero(date.getMinutes())}:${fullZero(date.getSeconds())}`
   const articleInfo = {
