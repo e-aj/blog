@@ -406,7 +406,6 @@ export default defineComponent({
   border: 1px solid #ccc;
   cursor: pointer;
   img {
-    width: 150px;
     height: 150px;
     position: absolute;
   }
