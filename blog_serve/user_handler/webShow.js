@@ -1,11 +1,12 @@
-const db = require("../db")
+const db = require("../db");
+const fs = require("fs");
 
-exports.getWorksList = (req,res)=>{
-    let currentPage = req.body.currentPage;
-    let pageSize = req.body.pageSize;
-    const sql = `select * from blog_works where is_delete = 0`
-    db.query(sql,(err,result)=>{
-        if (err) return res.send({ status: 1, message: err });
+exports.getWorksList = (req, res) => {
+  let currentPage = req.body.currentPage;
+  let pageSize = req.body.pageSize;
+  const sql = `select * from blog_works where is_delete = 0`;
+  db.query(sql, (err, result) => {
+    if (err) return res.send({ status: 1, message: err });
 
     if (result.length === 0) {
       res.send({
@@ -22,15 +23,15 @@ exports.getWorksList = (req,res)=>{
       data,
       total,
     });
-    })
-}
+  });
+};
 
-exports.getArticleList= (req,res)=>{
-    let currentPage = req.body.currentPage;
-    let pageSize = req.body.pageSize;
-    const sql = `select * from blog_articles where is_delete = 0`
-    db.query(sql,(err,result)=>{
-        if (err) return res.send({ status: 1, message: err });
+exports.getArticleList = (req, res) => {
+  let currentPage = req.body.currentPage;
+  let pageSize = req.body.pageSize;
+  const sql = `select * from blog_articles where is_delete = 0`;
+  db.query(sql, (err, result) => {
+    if (err) return res.send({ status: 1, message: err });
 
     if (result.length === 0) {
       res.send({
@@ -39,6 +40,8 @@ exports.getArticleList= (req,res)=>{
       });
       return;
     }
+
+
     let total = result.length;
     let data = result.splice((currentPage - 1) * pageSize, pageSize);
     res.send({
@@ -47,5 +50,5 @@ exports.getArticleList= (req,res)=>{
       data,
       total,
     });
-    })
-}
+  });
+};
