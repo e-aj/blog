@@ -94,12 +94,6 @@ exports.getArticleList = (req, res) => {
         data,
         total,
       });
-  
-
     }, 1000)
-
-
-
-
   });
 };

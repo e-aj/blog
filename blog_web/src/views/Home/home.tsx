@@ -15,7 +15,7 @@ function Home() {
               <Link to="/works">作品</Link>
             </li>
             <li>
-              <Link to="">文章</Link>
+              <Link to="/article">文章</Link>
             </li>
             <li>
               <Link to="/about">关于</Link>
