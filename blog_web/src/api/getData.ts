@@ -12,7 +12,7 @@ export function getArticleList(data:any) {
 
 export function getWorksList(data:any) {
     return instance({
-        url:'api/getArticleList',
+        url:'api/getWorksList',
         data,
         method:'post'
     })

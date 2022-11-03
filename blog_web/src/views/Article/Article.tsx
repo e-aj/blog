@@ -48,7 +48,7 @@ function Article() {
                 <div className="artTitle">{item.title}</div>
                 <div className="lastDate">{item.last_date}</div>
               </div>
-              <Link className="right" to='/articleDetail'>
+              <Link className="right"  to={`/articleDetail/${item.id}`} state={item}>
                 查看
               </Link>
             </List.Item>
