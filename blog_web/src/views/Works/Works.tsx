@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Works.less";
 import { getWorksList } from "../../api/getData";
-import {  Spin } from "antd";
+import { Spin } from "antd";
 
 function Works() {
   interface workListType {
     id: number;
     name: string;
-    content: string;
+    link: string;
     cover_img?: string;
     pub_date?: string;
     last_date?: string;
@@ -46,20 +46,35 @@ function Works() {
           <div className="worksList">
             <div className="top">
               <div className="left">
+                <div className="text">
+                  <span>{worksList[0].name}</span>
+                </div>
                 <img src={worksList[0].cover_img} alt="" />
               </div>
               <div className="right">
+                <div className="text">
+                  <span>{worksList[1].name}</span>
+                </div>
                 <img src={worksList[1].cover_img} alt="" />
               </div>
             </div>
             <div className="bottom">
               <div className="left">
-                <img src={worksList[2].cover_img}  alt="" />
+              <div className="text">
+                  <span>{worksList[2].name}</span>
+                </div>
+                <img src={worksList[2].cover_img} alt=""  />
               </div>
               <div className="center">
+              <div className="text">
+                  <span>{worksList[3].name}</span>
+                </div>
                 <img src={worksList[3].cover_img} alt="" />
               </div>
               <div className="right">
+              <div className="text">
+                  <span>{worksList[4].name}</span>
+                </div>
                 <img src={worksList[4].cover_img} alt="" />
               </div>
             </div>

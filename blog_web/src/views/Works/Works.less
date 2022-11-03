@@ -8,16 +8,35 @@
     }
     .worksList {
       width: 100%;
+      img {
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
+      }
+      .text {
+        // display: inline-block;
+        bottom: 20px;
+        left: 20px;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 10px;
+        span {
+          color: #fff;
+          font-size: 20px;
+          z-index: 9;
+        }
+      }
+      .left,.center,.right{
+        position: relative;
+       }
       .top {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        img {
-          width: 100%;
-          height: 300px;
-        }
+       
         .left {
-          width: 60%;
+          width: 63.3%;
         }
         .right {
           width: 30%;
@@ -27,12 +46,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        div {
+        .left,.center,.right{
           width: 30%;
-        }
-        img {
-          width: 100%;
-          height: 300px;
         }
       }
     }
