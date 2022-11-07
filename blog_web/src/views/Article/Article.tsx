@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Article.less";
 import { getArticleList } from "../../api/getData";
-import {  List } from "antd";
+import {  List,Spin } from "antd";
 import { Link } from "react-router-dom";
 
 function Article() {
@@ -16,6 +16,7 @@ function Article() {
     author_id?:number
   }
   const [articleList, setArticleList] = useState<articleListType[]>([]);
+  const [loadingShow,setLoadingShow] = useState<boolean>(true)
 
   const getArticle = () => {
     let data = {
@@ -23,7 +24,11 @@ function Article() {
       pageSize: 10,
     };
     getArticleList(data).then((res) => {
-      setArticleList(res.data);
+      if(res.status ===0){
+        setArticleList(res.data);
+        setLoadingShow(false)
+      }
+      
     });
   };
   useEffect(() => {
@@ -38,7 +43,10 @@ function Article() {
         <span>Articles Collection</span>
       </div>
       <div className="content">
-        <List
+        {loadingShow?(
+          <Spin size="large"></Spin>
+        ):(
+          <List
           itemLayout="horizontal"
           dataSource={articleList}
           renderItem={(item) => (
@@ -48,12 +56,15 @@ function Article() {
                 <div className="artTitle">{item.title}</div>
                 <div className="lastDate">{item.last_date}</div>
               </div>
-              <Link className="right"  to={`/articleDetail/${item.id}`} state={item}>
+              <Link className="right"  to={`/articleDetai/${item.id}`} state={item}>
                 查看
               </Link>
             </List.Item>
           )}
         />
+        )
+          }
+        
       </div>
     </div>
   );

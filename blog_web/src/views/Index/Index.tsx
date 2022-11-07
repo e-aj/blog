@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import './Index.less'
 
 import {  Carousel } from "antd";
 import avatar1 from "../../assets/avatar1.png";
 import avatar2 from "../../assets/avatar2.png";
+import {getWorksList} from '../../api/getData'
 
 function Index() {
   const [avatar, setAvatar] = useState(avatar1);
 
   const checkAvatar = () => {
+    console.log(11)
     setInterval(() => {
       avatar === avatar1 ? setAvatar(avatar2) : setAvatar(avatar1);
     }, 2000);
   };
-  checkAvatar();
+  useEffect(()=>{
+    checkAvatar();
+  },[])
+
+
 
   const onChange = (currentSlide: number) => {
     console.log(currentSlide);

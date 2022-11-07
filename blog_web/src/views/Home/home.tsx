@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./home.less";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet,useLocation} from "react-router-dom";
+import { spawn } from "child_process";
 
 function Home() {
+  const location = useLocation()
+  if(location.pathname.includes('articleDetai')){
+    location.pathname = '/article'
+  }
+  const   [nacList,setNavList] = useState([
+    {
+      name:"首页",
+      path:"/",
+      key:'index'
+    },{
+      name:'作品',
+      path:'/works',
+      key:'works'
+    },
+    {
+      name:'文章',
+      path:'/article',
+      key:'article'
+    },
+    {
+      name:'关于',
+      path:'/about',
+      key:'about'
+    },
+    {
+      name:'XX',
+      path:'/',
+      key:'/'
+    }
+  ])
   return (
+
     <div className="Home">
       <div className="container">
         <div className="nav">
           <ul>
-            <li>
-              <Link to="/">首页</Link>
-            </li>
-            <li>
-              <Link to="/works">作品</Link>
-            </li>
-            <li>
-              <Link to="/article">文章</Link>
-            </li>
-            <li>
-              <Link to="/about">关于</Link>
-            </li>
-            <li>
-              <Link to="">XX</Link>
-            </li>
+            {
+              nacList.map(item=>{return (<li key={item.key} ><Link to={item.path} className={location.pathname === item.path ?  'active_nav':''} >{item.name}</Link></li>)})
+            }
           </ul>
         </div>
         <div className="line"></div>

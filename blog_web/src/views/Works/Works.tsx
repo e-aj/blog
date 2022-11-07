@@ -28,6 +28,7 @@ function Works() {
       }
     });
   };
+  
   useEffect(() => {
     getWorks();
   }, []);
@@ -41,7 +42,7 @@ function Works() {
       </div>
       <div className="content">
         {loadingShow ? (
-          <Spin></Spin>
+          <Spin size="large"></Spin>
         ) : (
           <div className="worksList">
             <div className="top">

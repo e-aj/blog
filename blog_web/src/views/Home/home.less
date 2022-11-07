@@ -10,6 +10,7 @@
     position: relative;
     top: 50px;
     border-radius: 15px;
+    height: 90%;
     .nav {
       font-weight: bold;
       ul {
@@ -19,11 +20,15 @@
           a {
             color: #262626;
           }
+          .active_nav{
+            color: #f25a67;
+          }
           a:hover {
             color: #f25a67;
           }
         }
       }
+      
     }
     .line {
       width: 100%;
@@ -32,13 +37,14 @@
     }
     .center {
       width: 90%;
-      margin: 50px auto;
-      
+      height: 80%;
+      margin: 20px auto;
+      overflow-y: auto;
     }
     .foot {
       width: 100%;
-      bottom: 20px;
-      position: relative;
+      bottom: 10px;
+      position: absolute;
       text-align: center;
       color: #999;
       margin-top: 20px;
