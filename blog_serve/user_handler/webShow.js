@@ -1,23 +1,7 @@
 const db = require("../db");
 const fs = require("fs");
 
-// const readFileFun = (cover_img) => {
-//   return new Promise((resolve, reject) => {
-//     fs.readFile(String(cover_img), (err, data) => {
-//       if (err) {
-//         console.log(err);
-//       }
-//       // var base64Img = `data:image/jpeg;base64,${data.toString("base64")}`;
-//       resolve(data);
-//     });
-//   });
-// };
-
-const readFileFun = (cover_img) => { };
-
 exports.getWorksList = (req, res) => {
-  let currentPage = req.body.currentPage;
-  let pageSize = req.body.pageSize;
   const sql = `select * from blog_works where is_delete = 0`;
   db.query(sql, (err, result) => {
     if (err) return res.send({ status: 1, message: err });
@@ -41,13 +25,12 @@ exports.getWorksList = (req, res) => {
 
 
     setTimeout(() => {
-      let total = result.length;
-      let data = result.splice((currentPage - 1) * pageSize, pageSize);
+      let data = result.splice(0,5);
+      console.log(data)
       res.send({
         status: 0,
         message: "获取作品列表成功！",
         data,
-        total,
       });
 
     }, 1000)
