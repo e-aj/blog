@@ -11,7 +11,7 @@
  Target Server Version : 50738
  File Encoding         : 65001
 
- Date: 27/10/2022 17:25:26
+ Date: 07/11/2022 18:03:52
 */
 
 SET NAMES utf8mb4;
@@ -107,13 +107,15 @@ CREATE TABLE `blog_works`  (
   `is_delete` int(1) UNSIGNED ZEROFILL NULL DEFAULT 0,
   `author_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_works
 -- ----------------------------
-INSERT INTO `blog_works` VALUES (1, '2', '2222', 'uploads\\works\\d8faa682a5aa49dfc184793497ac9095', '', '2022-10-26  15:04:25', '2022-10-27  17:05:33', 0, 1);
+INSERT INTO `blog_works` VALUES (1, '2', 'https://www.baidu.com/', 'uploads\\works\\b22cc3c8398c0287b49392c3339afc23', '', '2022-10-26  15:04:25', '2022-10-31  16:49:20', 0, 1);
 INSERT INTO `blog_works` VALUES (2, '2222', '111', 'uploads\\works\\d9af03bd1bd1449f4d36afadb070e85b', '222', '2022-10-27  16:54:24', '2022-10-27  16:54:24', 0, 1);
 INSERT INTO `blog_works` VALUES (3, '2222444', '2223', 'uploads\\works\\01955e149d9a748a64bb512c8e515df8', '3333', '2022-10-27  16:55:16', '2022-10-27  17:14:31', 0, 1);
+INSERT INTO `blog_works` VALUES (4, '我的世界', 'undefined', 'uploads\\works\\6aff6badfaf655469a14553977591488', 'undefined', '2022-10-27  17:46:15', '2022-10-27  17:46:15', 0, 1);
+INSERT INTO `blog_works` VALUES (5, 'ceshi', '11', 'uploads\\works\\27ecc9d0969f693d1002a31902a0c179', '11', '2022-10-31  16:38:08', '2022-10-31  16:38:08', 0, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
