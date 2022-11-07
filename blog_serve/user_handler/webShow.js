@@ -26,7 +26,6 @@ exports.getWorksList = (req, res) => {
 
     setTimeout(() => {
       let data = result.splice(0,5);
-      console.log(data)
       res.send({
         status: 0,
         message: "获取作品列表成功！",

@@ -1,4 +1,4 @@
-.index{
+.index {
   .top {
     width: 100%;
     display: flex;
@@ -33,11 +33,41 @@
       }
     }
   }
-  .content{
-    width: 90%;
+  .content {
     margin: auto;
     .ant-carousel {
-     width: 100%;
+      width: 1030px;
+      height: 520px;
+      position: relative;
+      img {
+        width: 1030px;
+        height: 520px;
+        border-radius: 20px;
+      }
+      .coverTitle{
+        color: #fff;
+        margin-top: 350px;
+        margin-left: 50px;
+        z-index: 9;
+        position: absolute;
+        .name{
+          font-size: 36px;
+        }
+        a{
+          font-weight: bold;
+          color: #fff;
+        }
+        .start{
+          cursor: pointer;
+          margin-top: 10px;
+          background-color: rgba(7, 7, 7, 0.8);
+          padding: 10px;
+          border-radius: 10px;
+          text-align: center;
+          width: 100px;
+          
+        }
+      }
     }
   }
 }

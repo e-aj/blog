@@ -17,11 +17,7 @@ function Works() {
   const [worksList, setWorksList] = useState<workListType[]>([]);
   const [loadingShow, setLoadingShow] = useState<boolean>(true);
   const getWorks = () => {
-    let data = {
-      currentPage: 1,
-      pageSize: 10,
-    };
-    getWorksList(data).then((res: any) => {
+    getWorksList().then((res: any) => {
       if (res.status === 0) {
         setWorksList(res.data);
         setLoadingShow(false);

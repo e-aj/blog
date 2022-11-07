@@ -10,10 +10,9 @@ export function getArticleList(data:any) {
 }
 
 
-export function getWorksList(data:any) {
+export function getWorksList() {
     return instance({
         url:'api/getWorksList',
-        data,
         method:'post'
     })
     

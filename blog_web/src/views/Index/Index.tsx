@@ -1,28 +1,51 @@
-import React, { useState,useEffect } from "react";
-import './Index.less'
-
-import {  Carousel } from "antd";
+import React, { useState, useEffect } from "react";
+import "./Index.less";
+import { Carousel,  } from "antd";
 import avatar1 from "../../assets/avatar1.png";
 import avatar2 from "../../assets/avatar2.png";
-import {getWorksList} from '../../api/getData'
+import { getWorksList } from "../../api/getData";
 
 function Index() {
+  interface workListType {
+    id: number;
+    name: string;
+    link: string;
+    cover_img?: string;
+    pub_date?: string;
+    last_date?: string;
+    cate_id?: number;
+    author_id?: number;
+  }
   const [avatar, setAvatar] = useState(avatar1);
+  const [worksList, setWorkList] = useState<workListType[]>([]);
 
   const checkAvatar = () => {
-    console.log(11)
+    console.log(11);
     setInterval(() => {
       avatar === avatar1 ? setAvatar(avatar2) : setAvatar(avatar1);
     }, 2000);
   };
-  useEffect(()=>{
+
+  const getWorks = () => {
+    getWorksList().then((res) => {
+      if (res.status === 0) {
+        setWorkList(res.data);
+        localStorage.setItem("worksList", JSON.stringify(res.data));
+      }
+    });
+  };
+  useEffect(() => {
+    let strogeWorksList = localStorage.getItem("worksList");
+    if (strogeWorksList) {
+      setWorkList(JSON.parse(strogeWorksList));
+    } else {
+      getWorks();
+    }
     checkAvatar();
-  },[])
-
-
+  }, []);
 
   const onChange = (currentSlide: number) => {
-    console.log(currentSlide);
+    console.log(1);
   };
   return (
     <div className="index">
@@ -52,11 +75,20 @@ function Index() {
         </div>
       </div>
       <div className="content">
-      <Carousel afterChange={onChange} autoplay>
-      <div>
-        <h3 >1</h3>
-      </div>
-    </Carousel>
+        <Carousel afterChange={onChange} autoplay>
+          {worksList.map((item) => {
+            return (
+              <div key={item.id}>
+                <div className="coverTitle">
+                  <div className="name">{item.name}</div>
+                  <a href={item.link}><div className="start">开始阅读</div></a>
+                </div>
+                <img src={item.cover_img} alt="" />
+                
+              </div>
+            );
+          })}
+        </Carousel>
       </div>
     </div>
   );

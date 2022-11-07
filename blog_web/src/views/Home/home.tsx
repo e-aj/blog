@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./home.less";
 import { Link, Outlet,useLocation} from "react-router-dom";
-import { spawn } from "child_process";
-
 function Home() {
   const location = useLocation()
   if(location.pathname.includes('articleDetai')){
@@ -38,17 +36,16 @@ function Home() {
 
     <div className="Home">
       <div className="container">
-        <div className="nav">
-          <ul>
+          <ul className="nav">
             {
               nacList.map(item=>{return (<li key={item.key} ><Link to={item.path} className={location.pathname === item.path ?  'active_nav':''} >{item.name}</Link></li>)})
             }
           </ul>
-        </div>
         <div className="line"></div>
         <div className="center">
           <Outlet />
         </div>
+        <div className="line"></div>
         <div className="foot">
         <span>333</span>
         <span>23333</span>
