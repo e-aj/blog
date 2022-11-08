@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import  './ArticleDetail.less'
 
 function ArticleDetail() {
   const stateParams = useLocation();
@@ -14,6 +15,13 @@ function ArticleDetail() {
       </div>
       <div className="content">
           <h1>{articleDta.title}</h1>
+          <div className="else">
+            <span>编辑时间：{articleDta.last_date}</span>
+            <span className="author">作者：{articleDta.author_id}</span>
+          </div>
+          <div  className="main" dangerouslySetInnerHTML={{
+              __html: articleDta.content
+            }}/>
       </div>
     </div>
   );

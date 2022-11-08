@@ -51,12 +51,12 @@ function Article() {
           dataSource={articleList}
           renderItem={(item) => (
             <List.Item>
-              <img src={item.cover_img} alt="" className="left" />
-              <div className="center">
+              <img src={item.cover_img} alt="" />
+              <div className="artContent">
                 <div className="artTitle">{item.title}</div>
                 <div className="lastDate">{item.last_date}</div>
               </div>
-              <Link className="right"  to={`/articleDetai/${item.id}`} state={item}>
+              <Link className="check"  to={`/articleDetai/${item.id}`} state={item}>
                 查看
               </Link>
             </List.Item>

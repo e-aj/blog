@@ -40,39 +40,49 @@ function Works() {
         {loadingShow ? (
           <Spin size="large"></Spin>
         ) : (
-          <div className="worksList">
+          <div className="worksList ">
             <div className="top">
-              <div className="left">
+              <div className="works1 work" >
+                <a href={worksList[0].link}>
                 <div className="text">
                   <span>{worksList[0].name}</span>
                 </div>
                 <img src={worksList[0].cover_img} alt="" />
+                </a>
               </div>
-              <div className="right">
+              <div className="works2 work">
+              <a href={worksList[1].link}>
                 <div className="text">
                   <span>{worksList[1].name}</span>
                 </div>
                 <img src={worksList[1].cover_img} alt="" />
+                </a>
               </div>
             </div>
             <div className="bottom">
-              <div className="left">
+              <div className="work3 work" >
+              <a href={worksList[2].link}>
               <div className="text">
                   <span>{worksList[2].name}</span>
                 </div>
                 <img src={worksList[2].cover_img} alt=""  />
+                </a>
               </div>
-              <div className="center">
+              <div className="work4 work">
+              <a href={worksList[3].link}>
               <div className="text">
                   <span>{worksList[3].name}</span>
                 </div>
                 <img src={worksList[3].cover_img} alt="" />
+                </a>
               </div>
-              <div className="right">
+              <div className="work5 work">
+              <a href={worksList[4].link}>
               <div className="text">
                   <span>{worksList[4].name}</span>
                 </div>
                 <img src={worksList[4].cover_img} alt="" />
+                </a>
               </div>
             </div>
           </div>
