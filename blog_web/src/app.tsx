@@ -8,6 +8,7 @@ import About from "./views/About/About";
 import Works from "./views/Works/Works";
 import Article from "./views/Article/Article";
 import ArticleDetail from "./views/Article/ArticleDetail";
+import Notfound from './views/Notfound/Notfound'
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="works" element={<Works />} />
         <Route path="article" element={<Article />} />
         <Route path="articleDetai/:id" element={<ArticleDetail />} />
+        <Route path="articleDetai/:id" element={<ArticleDetail />} />
+        <Route path="*" element={<Notfound/>}></Route>
       </Route>
     </Routes>
   );

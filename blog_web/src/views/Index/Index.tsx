@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Index.less";
-import { Carousel,  } from "antd";
+import { Carousel } from "antd";
 import avatar1 from "../../assets/avatar1.png";
 import avatar2 from "../../assets/avatar2.png";
 import { getWorksList } from "../../api/getData";
+import {Link} from 'react-router-dom'
 
 function Index() {
   interface workListType {
@@ -44,9 +45,16 @@ function Index() {
     checkAvatar();
   }, []);
 
-  const onChange = (currentSlide: number) => {
-    console.log(1);
-  };
+  interface appListType {
+    src: string;
+    link: string;
+  }
+  const [appList, setAppList] = useState<appListType[]>([
+    {
+      src: require("../../assets/u147.png"),
+      link: "https://github.com/e-aj",
+    },
+  ]);
   return (
     <div className="index">
       <div className="top">
@@ -70,21 +78,33 @@ function Index() {
           </Carousel>
           <div className="socical">
             <div className="socil_name">社交媒体</div>
-            <div className="app">222</div>
+            <div className="app">
+                {appList.map((item,key) => {
+                  return (
+
+                    <a key={key} href={item.link}>
+                      <div className="circle">
+                        <img src={item.src} alt="" />
+                      </div>
+                    </a>
+                  );
+                })}
+            </div>
           </div>
         </div>
       </div>
       <div className="content">
-        <Carousel afterChange={onChange} autoplay>
+        <Carousel autoplay>
           {worksList.map((item) => {
             return (
               <div key={item.id}>
                 <div className="coverTitle">
                   <div className="name">{item.name}</div>
-                  <a href={item.link}><div className="start">开始阅读</div></a>
+                  <a href={item.link}>
+                    <div className="start">开始阅读</div>
+                  </a>
                 </div>
                 <img src={item.cover_img} alt="" />
-                
               </div>
             );
           })}
