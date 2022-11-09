@@ -1,9 +1,8 @@
 import instance from "./http";
 
-export function getArticleList(data:any) {
+export function getArticleList() {
     return instance({
         url:'api/getArticleList',
-        data,
         method:'post'
     })
     

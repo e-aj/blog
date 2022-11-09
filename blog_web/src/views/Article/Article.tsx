@@ -19,11 +19,7 @@ function Article() {
   const [loadingShow,setLoadingShow] = useState<boolean>(true)
 
   const getArticle = () => {
-    let data = {
-      currentPage: 1,
-      pageSize: 10,
-    };
-    getArticleList(data).then((res) => {
+    getArticleList().then((res) => {
       if(res.status ===0){
         setArticleList(res.data);
         setLoadingShow(false)

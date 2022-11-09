@@ -38,8 +38,6 @@ exports.getWorksList = (req, res) => {
 };
 
 exports.getArticleList = (req, res) => {
-  let currentPage = req.body.currentPage;
-  let pageSize = req.body.pageSize;
   const sql = `select * from blog_articles where is_delete = 0`;
   db.query(sql, (err, result) => {
     if (err) return res.send({ status: 1, message: err });
@@ -68,12 +66,10 @@ exports.getArticleList = (req, res) => {
 
 
     setTimeout(() => {
-      let total = result.length;
-      let data = result.splice((currentPage - 1) * pageSize, pageSize);
       res.send({
         status: 0,
         message: "获取作品列表文章！",
-        data,
+        result,
         total,
       });
     }, 1000)
