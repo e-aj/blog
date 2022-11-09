@@ -69,8 +69,7 @@ exports.getArticleList = (req, res) => {
       res.send({
         status: 0,
         message: "获取作品列表文章！",
-        result,
-        total,
+        data:result
       });
     }, 1000)
   });
