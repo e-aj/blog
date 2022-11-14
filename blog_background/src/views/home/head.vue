@@ -154,7 +154,7 @@ export default {
     const logoutHandleOk = () => {
       visibleLogout.value = false;
       message.info("退出成功");
-      localStorage.clear("token");
+      localStorage.clear();
       setTimeout(() => {
         router.push("/login");
       }, 1500);
@@ -177,15 +177,15 @@ export default {
     const addImg = ref("");
 
     //input file dom
-    const file = ref(null);
+    const file = ref<HTMLElement | null>(null);
 
     // 点击触发添加事件
     const addAvatar = () => {
-      file.value.dispatchEvent(new MouseEvent("click"));
+      file.value?.files?.[0].dispatchEvent(new MouseEvent("click"));
     };
 
     // input change 事件
-    const addChange = (e) => {
+    const addChange = (e: any) => {
       // getBase64(e.target.files[0]);
       let img = e.target.files[0]; //获取到上传文件的对象
       compressImg(img);

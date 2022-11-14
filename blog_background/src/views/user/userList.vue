@@ -13,9 +13,9 @@
       </template>
     </a-table>
     <a-pagination
-      v-model:current="page.currentPage"
+      v-model:current="nowPage.currentPage"
       :total="total"
-      v-model:pageSize="page.pageSize"
+      v-model:pageSize="nowPage.pageSize"
       @change="changepage"
     />
   </div>
@@ -63,7 +63,7 @@ export default defineComponent({
       currentPage: number;
       pageSize: number;
     }
-    const page = reactive<pageTyep>({
+    const nowPage = reactive<pageTyep>({
       currentPage: 1,
       pageSize: 5,
     });
@@ -71,7 +71,7 @@ export default defineComponent({
 
     // 获取用户列表
     const getUserList = () => {
-      userList(page).then((res) => {
+      userList(nowPage).then((res: any) => {
         data.value = res.result;
         total.value = res.total;
       });
@@ -79,11 +79,7 @@ export default defineComponent({
 
     //改变页码
     const changepage = (page: number, pageSize: number) => {
-      page = {
-        currentPage: page,
-        pageSize: pageSize,
-      };
-      getUserList();
+      (nowPage.currentPage = page), (nowPage.pageSize = pageSize), getUserList();
     };
 
     // 页面加载完成
@@ -95,7 +91,7 @@ export default defineComponent({
     return {
       columns,
       data,
-      page,
+      nowPage,
       total,
       changepage,
     };

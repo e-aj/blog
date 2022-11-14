@@ -189,7 +189,7 @@ export default defineComponent({
     interface worksListType {
       id?: number;
       name?: string;
-      cover_img?: File;
+      cover_img?: string;
       link?: string;
       pub_date?: string;
       last_date?: string;
@@ -217,8 +217,7 @@ export default defineComponent({
         currentPage: currentPage.value,
         pageSize: pageSize.value,
       };
-      getWorksList(data).then((res) => {
-        console.log(res);
+      getWorksList(data).then((res: any) => {
         if (res.status === 0) {
           total.value = res.total;
           worksList.value = res.data;

@@ -19,7 +19,7 @@ export function updateAvatar(data:any){
 }
 
 // 用户列表
-export function userList(data) {
+export function userList(data:any) {
     return instance({
       url: "my/userList",
       method: 'post',
@@ -28,7 +28,7 @@ export function userList(data) {
   }
 
   // 修改密码
-  export function updatepwd(data){
+  export function updatepwd(data:any){
     return instance({
       url:"my/updatepwd",
       method:'post',

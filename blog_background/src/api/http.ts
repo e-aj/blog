@@ -1,6 +1,4 @@
 import axios from "axios";
-
-import qs from "qs";
 import { message } from "ant-design-vue";
 // import { storeToRefs } from "pinia";
 // import { useStore } from "../stores/store";
@@ -36,7 +34,7 @@ instance.interceptors.response.use(
     if (res.data.status !== 5) {
       return Promise.resolve(res.data);
     } else {
-      localStorage.clear('token')
+      localStorage.clear()
     }
   },
   (error) => {

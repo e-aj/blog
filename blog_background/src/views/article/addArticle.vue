@@ -30,11 +30,17 @@
           </div>
         </a-form-item>
         <a-form-item has-feedback label="分类" name="title">
-          <a-select
+          <!-- <a-select
             v-model:value="value"
             style="width: 100%"
             placeholder="请选择分类"
-            :options="cateOption.map((item) => ({ value: item.id, label: item.name }))"
+            :options="cateOption.map((item:any) => ({ value: item.id, label: item.name }))"
+            @select="selectOk"
+          ></a-select> -->
+          <a-select
+            style="width: 100%"
+            placeholder="请选择分类"
+            :options="cateOption.map((item:any) => ({ value: item.id, label: item.name }))"
             @select="selectOk"
           ></a-select>
         </a-form-item>
@@ -76,6 +82,7 @@ import { addArticle } from "../../api/article";
 import { message } from "ant-design-vue";
 import { getArticleCate } from "../../api/artCate";
 import { useRouter } from "vue-router";
+import { value } from "dom7";
 interface Route {
   path: string;
   breadcrumbName: string;
@@ -226,7 +233,7 @@ export default defineComponent({
           },
         },
         insertVideo: {
-          onInsertedVideo(videoNode: VideoElement | null) {
+          onInsertedVideo(videoNode: any) {
             // TS 语法
             // onInsertedVideo(videoNode) {                    // JS 语法
             if (videoNode == null) return;
@@ -287,7 +294,7 @@ export default defineComponent({
     const addImg = ref<string>("");
     // input change 事件
     let formData = new FormData();
-    const addChange = (e) => {
+    const addChange = (e: any) => {
       let img = e.target.files[0]; //获取到上传文件的对象
       // articleData.cover_img = img;
       formData.append("file", img);

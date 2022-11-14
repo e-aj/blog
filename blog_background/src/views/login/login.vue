@@ -54,7 +54,7 @@ export default defineComponent({
     const storeData = storeToRefs(store);
 
     const onFinish = (values: any) => {
-      login(formState).then((res) => {
+      login(formState).then((res: any) => {
         if (res.status === 0) {
           localStorage.setItem("token", res.token);
           store.$patch((storeData) => {

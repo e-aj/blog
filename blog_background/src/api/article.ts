@@ -22,7 +22,7 @@ export function addArticle(formData:any){
 }
 
 // 获取文章详情
-export  function getArticle(id:number){
+export  function getArticle(id:any){
     return instance({
         url:'my/getArticle',
         method:'post',
@@ -31,7 +31,7 @@ export  function getArticle(id:number){
 }
 
 // 删除文章
-export function deleteArticle(id:number){
+export function deleteArticle(id:any){
     return instance({
         url:'my/deleteArticle',
         method:'post',

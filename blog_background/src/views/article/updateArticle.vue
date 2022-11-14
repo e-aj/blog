@@ -29,7 +29,7 @@
             v-model:value="articleData.cate_id"
             style="width: 100%"
             placeholder="请选择分类"
-            :options="cateOption.map((item) => ({ value: item.id, label: item.name }))"
+            :options="cateOption.map((item:any) => ({ value: item.id, label: item.name }))"
             @select="selectOk"
           ></a-select>
         </a-form-item>
@@ -216,7 +216,7 @@ export default defineComponent({
           },
         },
         insertVideo: {
-          onInsertedVideo(videoNode: VideoElement | null) {
+          onInsertedVideo(videoNode: null) {
             // TS 语法
             // onInsertedVideo(videoNode) {                    // JS 语法
             if (videoNode == null) return;
@@ -237,7 +237,7 @@ export default defineComponent({
       editor.destroy();
     });
 
-    const handleCreated = (editor) => {
+    const handleCreated = (editor: any) => {
       editorRef.value = editor; // 记录 editor 实例，重要！
     };
 
@@ -292,7 +292,7 @@ export default defineComponent({
     // 上传封面
     const isUpload = ref<boolean>(false);
     //input file dom
-    const uploadFile = ref(null);
+    const uploadFile = ref<HTMLElement>();
     const addAvatar = () => {
       uploadFile.value.dispatchEvent(new MouseEvent("click"));
     };

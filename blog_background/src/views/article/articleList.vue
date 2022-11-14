@@ -155,7 +155,7 @@ export default defineComponent({
         currentPage: currentPage.value,
         pageSize: pageSize.value,
       };
-      getArticleList(data).then((res) => {
+      getArticleList(data).then((res: any) => {
         if (res.status === 0) {
           total.value = res.total;
           articleList.value = res.data;
