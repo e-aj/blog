@@ -174,29 +174,29 @@ export default {
     };
 
     // 更新的图片
-    const addImg = ref("");
+    const addImg = ref<any>("");
 
     //input file dom
-    const file = ref<HTMLElement | null>(null);
+    const file = ref<any>(null);
 
     // 点击触发添加事件
     const addAvatar = () => {
-      file.value?.files?.[0].dispatchEvent(new MouseEvent("click"));
+      file.value.dispatchEvent(new MouseEvent("click"));
     };
-
     // input change 事件
     const addChange = (e: any) => {
-      // getBase64(e.target.files[0]);
       let img = e.target.files[0]; //获取到上传文件的对象
-      compressImg(img);
-      // console.log(img);
-      // var reader = new FileReader();
-      // reader.readAsDataURL(img); //参数为上传的文件对象 传值进去就会触发以下onload方法
-      // reader.onload = (i) => {
-      //   // e.target.result为转换成的base64编码
-      //   // console.log(i.target.result)
-      //   addImg.value = i.target.result;
-      // };
+      if (img.size > 102400) {
+        compressImg(img);
+      } else {
+        // addImg.value =
+        let reader = new FileReader();
+        reader.readAsDataURL(img);
+        //开始转
+        reader.onload = () => {
+          addImg.value = reader.result;
+        };
+      }
     };
 
     // 更换头像确认
@@ -221,20 +221,19 @@ export default {
     const compressImg = (file: any) => {
       let reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onloadend = (e) => {
+      reader.onloadend = (e: any) => {
         // 新建一个img标签
         let image = new Image();
         image.src = e.target.result; //将图片的路径设为file路径
         image.onload = () => {
           //压缩的思路是创建一个图片，将file等于这个图片，然后创建一个canvas图层 ，将canvas等比例缩放，然后用canvas的drawImage将图片与canvas合起来，然后在转成吧canvas的base64转成file即可
           let canvas = document.createElement("canvas");
-          let context = canvas.getContext("2d");
+          let context: any = canvas.getContext("2d");
           let imageWidth = image.width / 3;
           let imageHeight = image.height / 3;
           let data = "";
           canvas.width = imageWidth;
           canvas.height = imageHeight;
-
           context.drawImage(image, 0, 0, imageWidth, imageHeight);
           data = canvas.toDataURL("image/jpeg");
           addImg.value = data;
@@ -256,7 +255,7 @@ export default {
     const changePassword = () => {
       updatepwdVisible.value = true;
     };
-
+    // 修改确定
     const updatepwdHandleOk = () => {
       updatepwd(pwdData).then((res) => {
         if (res.status === 0) {

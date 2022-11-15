@@ -254,7 +254,7 @@ export default defineComponent({
       editor.destroy();
     });
 
-    const handleCreated = (editor) => {
+    const handleCreated = (editor: any) => {
       editorRef.value = editor; // 记录 editor 实例，重要！
     };
     // 数据类型
@@ -286,7 +286,7 @@ export default defineComponent({
     // 上传封面
     const isUpload = ref<boolean>(false);
     //input file dom
-    const file = ref(null);
+    const file = ref<any>(null);
     const addAvatar = () => {
       file.value.dispatchEvent(new MouseEvent("click"));
     };

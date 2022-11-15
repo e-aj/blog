@@ -127,6 +127,8 @@ export default defineComponent({
         img {
           position: absolute;
           left: 0;
+          width: 100px;
+          height: 100px;
         }
         input {
           display: none;

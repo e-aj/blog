@@ -292,7 +292,7 @@ export default defineComponent({
     // 上传封面
     const isUpload = ref<boolean>(false);
     //input file dom
-    const uploadFile = ref<HTMLElement>();
+    const uploadFile = ref<any>();
     const addAvatar = () => {
       uploadFile.value.dispatchEvent(new MouseEvent("click"));
     };

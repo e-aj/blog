@@ -230,7 +230,7 @@ export default defineComponent({
 
     // 上传封面
     //input file dom
-    const uploadFile = ref(null);
+    const uploadFile = ref<any>(null);
     const addAvatar = () => {
       uploadFile.value.dispatchEvent(new MouseEvent("click"));
     };
@@ -292,7 +292,6 @@ export default defineComponent({
           message.warn(res.message);
         }
       });
-      console.log(updateWorksData.cover_img);
     };
 
     // 确认修改
