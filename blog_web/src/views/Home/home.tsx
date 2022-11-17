@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import "./home.less";
 import { Link, Outlet,useLocation} from "react-router-dom";
 function Home() {
@@ -6,7 +6,7 @@ function Home() {
   if(location.pathname.includes('articleDetai')){
     location.pathname = '/article'
   }
-  const   [nacList,setNavList] = useState([
+  const   [nacList] = useState([
     {
       name:"首页",
       path:"/",
